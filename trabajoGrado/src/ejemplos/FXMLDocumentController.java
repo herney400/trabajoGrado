@@ -54,24 +54,13 @@ import javafx.util.Duration;
  * @author N550J
  */
 public class FXMLDocumentController implements Initializable {
-    
-    @FXML private Label label;    
+     
     @FXML private PieChart mibarchar ;
-    @FXML private TextField txtcliente;
-    //@FXML private LineChart graph;
-    @FXML private NumberAxis xAxis, yAxis;
-    @FXML private Button blinechart;
     @FXML private LineChart<Double, Double> graph;
     @FXML private BubbleChart<Double, Double> buble;
-    @FXML private NumberAxis x;
-    @FXML private NumberAxis y;
-    @FXML private GridPane gridpane;
-    @FXML private DatePicker dp;
-    private double cos;
-    private double sin;
     static final Duration ANIMATION_DURATION = new Duration(500);
     static final double ANIMATION_DISTANCE = 0.15;
-    //@FXML private LineChart<String, Number> graph;
+    String drilldownCss="";
     
     //Consultas ComboBox
     @FXML private ComboBox tipo_filtro;
@@ -93,12 +82,10 @@ public class FXMLDocumentController implements Initializable {
     @FXML private ComboBox combo_ano;
     @FXML private Label caption ;
     @FXML private MenuBar  menubar;
-    String drilldownCss="";
     @FXML private ToolBar toolbar;
     @FXML private Tab tab_h_consumo;
     @FXML private Tab tab_h_precio;
     @FXML private Tab tab_h_pagos;
-    
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -237,14 +224,50 @@ public class FXMLDocumentController implements Initializable {
         combo_ano.getSelectionModel().selectLast();
     }
     
-//    @FXML private void cambiarTabPagos(ActionEvent E){
-//    }
-//    
-//    @FXML private void cambiarTabConsumo(ActionEvent E){
-//    }
-//    
-//    @FXML private void cambiarTabPrecio(ActionEvent E){
-//    }
+    /**
+     * 
+     */
+    @FXML private void cambiarTabPagos(){
+//        if(tab_h_precio.isSelected()){
+//            
+//        }
+//        if(tab_h_consumo.isSelected()){
+//            
+//        }
+//        if(tab_h_pagos.isSelected()){
+//            
+//        }
+    }
+    
+    /**
+     * 
+     */
+    @FXML private void cambiarTabConsumo(){
+//        if(tab_h_precio.isSelected()){
+//            
+//        }
+//        if(tab_h_consumo.isSelected()){
+//            
+//        }
+//        if(tab_h_pagos.isSelected()){
+//            
+//        }
+    }
+
+    /**
+     * 
+     */
+    @FXML private void cambiarTabPrecio(){
+//        if(tab_h_precio.isSelected()){
+//            
+//        }
+//        if(tab_h_consumo.isSelected()){
+//            
+//        }
+//        if(tab_h_pagos.isSelected()){
+//            
+//        }
+    }
     
     /**
      * 
