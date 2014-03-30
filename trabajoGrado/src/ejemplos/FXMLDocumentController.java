@@ -237,14 +237,14 @@ public class FXMLDocumentController implements Initializable {
         combo_ano.getSelectionModel().selectLast();
     }
     
-    @FXML private void cambiarTabPagos(ActionEvent E){
-    }
-    
-    @FXML private void cambiarTabConsumo(ActionEvent E){
-    }
-    
-    @FXML private void cambiarTabPrecio(ActionEvent E){
-    }
+//    @FXML private void cambiarTabPagos(ActionEvent E){
+//    }
+//    
+//    @FXML private void cambiarTabConsumo(ActionEvent E){
+//    }
+//    
+//    @FXML private void cambiarTabPrecio(ActionEvent E){
+//    }
     
     /**
      * 

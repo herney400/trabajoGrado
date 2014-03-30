@@ -13,7 +13,7 @@
   <children>
     <TabPane layoutX="13.0" layoutY="33.0" prefHeight="376.0" prefWidth="869.0" tabClosingPolicy="UNAVAILABLE">
       <tabs>
-        <Tab fx:id="tab_h_consumo" onSelectionChanged="#cambiarTabConsumo" text="Historico Consumo">
+        <Tab text="Historico Consumo">
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="567.0" prefWidth="876.0">
               <children>
@@ -27,12 +27,12 @@
             </AnchorPane>
           </content>
         </Tab>
-        <Tab fx:id="tab_h_precio" onSelectionChanged="#cambiarTabPrecio" text="Historico Precio">
+        <Tab text="Historico Precio">
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
           </content>
         </Tab>
-        <Tab fx:id="tab_h_pagos" onSelectionChanged="#cambiarTabPagos" text="Historico Pagos">
+        <Tab fx:id="tab_h_pagos" text="Historico Pagos">
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
           </content>
