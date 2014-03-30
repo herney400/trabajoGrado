@@ -1,0 +1,13 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 20-mar-2014, 18:37:14
+    Author     : N550J
+*/
+.chart-pie:hover {
+    -fx-border-color: red;
+    -fx-border-width: 2px;
+}
