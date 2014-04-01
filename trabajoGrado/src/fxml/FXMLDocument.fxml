@@ -16,14 +16,11 @@
         <Tab fx:id="tab_h_consumo" onSelectionChanged="#cambiarTabConsumo" text="Historico Consumo">
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="567.0" prefWidth="876.0">
-              <children>
-                <ScrollPane id="ScrollPane" layoutX="15.0" layoutY="14.0" prefHeight="327.0" prefViewportHeight="360.0" prefViewportWidth="864.0" prefWidth="868.9998779296875">
-                  <content>
-                    <PieChart id="PieChart" fx:id="mibarchar" animated="true" legendSide="RIGHT" onMouseEntered="#evento" prefHeight="329.0" prefWidth="853.0" title="Consumo" />
-                  </content>
-                </ScrollPane>
-                <Accordion expandedPane="$null" layoutX="16.0" layoutY="331.0" />
-              </children>
+              <ScrollPane id="ScrollPane" layoutX="15.0" layoutY="14.0" prefHeight="327.0" prefViewportHeight="360.0" prefViewportWidth="864.0" prefWidth="854.0">
+                <content>
+                  <PieChart id="PieChart" fx:id="mibarchar" animated="true" legendSide="RIGHT" onMouseEntered="#evento" prefHeight="329.0" prefWidth="853.9998779296875" title="Consumo" />
+                </content>
+              </ScrollPane>
             </AnchorPane>
           </content>
         </Tab>
@@ -52,7 +49,7 @@
       <items>
         <TabPane prefHeight="251.0" prefWidth="869.0" tabClosingPolicy="UNAVAILABLE">
           <tabs>
-            <Tab text="Filtros Generales">
+            <Tab fx:id="tab_filtros_generales" text="Filtros Generales">
               <content>
                 <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="161.0" prefWidth="869.0">
                   <children>
@@ -100,7 +97,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                       </rowConstraints>
                     </GridPane>
-                    <GridPane layoutX="435.0" layoutY="35.0" prefHeight="95.0" prefWidth="320.0">
+                    <GridPane fx:id="gridPane" layoutX="435.0" layoutY="35.0" prefHeight="95.0" prefWidth="320.0">
                       <children>
                         <Label text="Medida:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                         <Label text="Fecha Inicial:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
@@ -129,7 +126,7 @@
                 </AnchorPane>
               </content>
             </Tab>
-            <Tab text="Filtros Demograficos">
+            <Tab fx:id="tab_filtros_demo" text="Filtros Demograficos">
               <content>
                 <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                   <children>
@@ -147,7 +144,7 @@
                             </FXCollections>
                           </items>
                         </ComboBox>
-                        <ComboBox fx:id="combo_estrato" prefHeight="21.0" prefWidth="187.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <ComboBox fx:id="combo_estrato" onAction="#activarFiltro" prefHeight="21.0" prefWidth="187.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                           <items>
                             <FXCollections fx:factory="observableArrayList">
                               <String fx:value="Item 1" />
@@ -176,11 +173,34 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                       </rowConstraints>
                     </GridPane>
+                    <GridPane layoutX="435.0" layoutY="37.0" prefWidth="333.0">
+                      <children>
+                        <Label text="Tipo de Filtro Estrato:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <ComboBox fx:id="combo_tipo_filtro_estrato" disable="true" prefHeight="21.0" prefWidth="182.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                          <items>
+                            <FXCollections fx:factory="observableArrayList">
+                              <String fx:value="Item 1" />
+                              <String fx:value="Item 2" />
+                              <String fx:value="Item 3" />
+                            </FXCollections>
+                          </items>
+                        </ComboBox>
+                      </children>
+                      <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      </columnConstraints>
+                      <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      </rowConstraints>
+                    </GridPane>
                   </children>
                 </AnchorPane>
               </content>
             </Tab>
-            <Tab text="Filtros Geograficos">
+            <Tab fx:id="tab_filtros_geo" text="Filtros Geograficos">
               <content>
                 <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                   <children>
@@ -207,7 +227,7 @@
                             </FXCollections>
                           </items>
                         </ComboBox>
-                        <ComboBox fx:id="combo_altitud" prefHeight="21.0" prefWidth="173.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <ComboBox fx:id="combo_altitud" onAction="#activarFiltroAltitud" prefHeight="21.0" prefWidth="173.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                           <items>
                             <FXCollections fx:factory="observableArrayList">
                               <String fx:value="Item 1" />
@@ -239,6 +259,16 @@
                             </FXCollections>
                           </items>
                         </ComboBox>
+                        <Label text="Tipo Filtro Altitud:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <ComboBox fx:id="combo_tipo_filtro_altitud" disable="true" prefHeight="21.0" prefWidth="175.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                          <items>
+                            <FXCollections fx:factory="observableArrayList">
+                              <String fx:value="Item 1" />
+                              <String fx:value="Item 2" />
+                              <String fx:value="Item 3" />
+                            </FXCollections>
+                          </items>
+                        </ComboBox>
                       </children>
                       <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -254,7 +284,7 @@
                 </AnchorPane>
               </content>
             </Tab>
-            <Tab text="Filtros de Tiempo">
+            <Tab fx:id="tab_filtros_time" text="Filtros de Tiempo">
               <content>
                 <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                   <children>
@@ -272,7 +302,7 @@
                             </FXCollections>
                           </items>
                         </ComboBox>
-                        <ComboBox id="combo_horaq" fx:id="combo_hora" prefHeight="21.0" prefWidth="182.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <ComboBox id="" fx:id="combo_hora" onAction="#activaFiltroHora" prefHeight="21.0" prefWidth="182.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                           <items>
                             <FXCollections fx:factory="observableArrayList">
                               <String fx:value="Item 1" />
@@ -303,28 +333,8 @@
                     </GridPane>
                     <GridPane layoutX="435.0" layoutY="35.0" prefHeight="94.9998779296875" prefWidth="333.0">
                       <children>
-                        <Label text="Día:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                        <Label text="Mes:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                        <Label text="Año:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                        <ComboBox fx:id="combo_dia" prefHeight="21.0" prefWidth="184.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                          <items>
-                            <FXCollections fx:factory="observableArrayList">
-                              <String fx:value="Item 1" />
-                              <String fx:value="Item 2" />
-                              <String fx:value="Item 3" />
-                            </FXCollections>
-                          </items>
-                        </ComboBox>
-                        <ComboBox fx:id="combo_mes" prefHeight="21.0" prefWidth="179.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                          <items>
-                            <FXCollections fx:factory="observableArrayList">
-                              <String fx:value="Item 1" />
-                              <String fx:value="Item 2" />
-                              <String fx:value="Item 3" />
-                            </FXCollections>
-                          </items>
-                        </ComboBox>
-                        <ComboBox fx:id="combo_ano" prefHeight="21.0" prefWidth="180.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <Label text="Tipo Filtro Hora:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <ComboBox fx:id="combo_mes" disable="true" prefHeight="21.0" prefWidth="179.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                           <items>
                             <FXCollections fx:factory="observableArrayList">
                               <String fx:value="Item 1" />
@@ -348,7 +358,7 @@
                 </AnchorPane>
               </content>
             </Tab>
-            <Tab text="Filtros Varios">
+            <Tab fx:id="tab_filtros_varios" text="Filtros Varios">
               <content>
                 <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
               </content>

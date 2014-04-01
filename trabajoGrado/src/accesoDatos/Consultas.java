@@ -6,6 +6,7 @@
 
 package accesoDatos;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -23,15 +24,24 @@ public class Consultas {
      * @param tablaSubConWhere
      * @param id_tablaSubConWhere
      * @param valoresWhere
+     * @param fechaInicial
+     * @param fechaFinal
+     * @param whereAux
      * @return 
      */
-    public String generarSQL(String tipoConsulta, String tablaSubCon, String id_tablaSubCon, String nombreCampo, String [] tablaSubConWhere, String [] id_tablaSubConWhere, String [] valoresWhere)
-    {
+    public String generarSQL(String tipoConsulta, String tablaSubCon, String id_tablaSubCon, String nombreCampo, String [] tablaSubConWhere, String [] id_tablaSubConWhere, String [] valoresWhere, String fechaInicial, String fechaFinal, ArrayList whereAux){
         String SQL = "";
 
         SQL += generarSelect(tipoConsulta, tablaSubCon, id_tablaSubCon, nombreCampo);
         SQL += " from historico_consumo ";
         SQL += generarWhere(tablaSubConWhere, id_tablaSubConWhere, valoresWhere);
+        
+        for(int i=0; i<whereAux.size(); i++)
+        {
+            SQL += whereAux.get(i) + "\n";
+        }
+        
+        SQL += generarSubConsultaFecha(fechaInicial, fechaFinal);
         SQL += " group by "+ nombreCampo + "\n";
         SQL += " order by consumo";
         
@@ -46,8 +56,7 @@ public class Consultas {
      * @param nombreCampo
      * @return 
      */
-    public String generarSelect (String tipoConsulta, String tablaSubCon, String id_tablaSubCon, String nombreCampo)
-    {
+    public String generarSelect (String tipoConsulta, String tablaSubCon, String id_tablaSubCon, String nombreCampo){
         String select = "";
         
         select += "select ";
@@ -72,8 +81,7 @@ public class Consultas {
      * @param valores
      * @return 
      */
-    public String generarWhere(String [] tablaSubCon, String [] id_tablaSubCon, String [] valores)
-    {
+    public String generarWhere(String [] tablaSubCon, String [] id_tablaSubCon, String [] valores){
         String where = "";
         
         where += "where 1 = 1\n";
@@ -83,5 +91,32 @@ public class Consultas {
             where += "and " + id_tablaSubCon[i] + " in (select "+ id_tablaSubCon[i] +" from "+ tablaSubCon[i] +" where "+ tablaSubCon[i]+ "."+ id_tablaSubCon[i] +" = "+valores[i]+") \n"; 
         }      
         return where;
+    }
+    
+    /**
+     * 
+     * @param fechaInicial
+     * @param fechaFinal
+     * @return 
+     */
+    public String generarSubConsultaFecha(String fechaInicial, String fechaFinal){
+        String subCon="";
+        if(fechaInicial.equals("") && !fechaFinal.equals(""))
+        {
+            subCon +=" and id_fecha in (select id_fecha from fecha where fecha < '"+ fechaFinal +"')";
+        }
+        else if(fechaFinal.equals("") && !fechaInicial.equals(""))
+        {
+            subCon +=" and id_fecha in (select id_fecha from fecha where fecha > '"+ fechaInicial +"')";
+        }
+        else if(!fechaFinal.equals("") && !fechaInicial.equals(""))
+        {
+            subCon += " and id_fecha in (select id_fecha from fecha where fecha > '"+ fechaInicial +"' and fecha < '"+ fechaFinal +"')";
+        }
+        else
+        {
+            subCon = "";
+        }
+        return subCon;
     }
 }

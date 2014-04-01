@@ -11,6 +11,7 @@ import accesoDatos.Consultas;
 import eu.schudt.javafx.controls.calendar.DatePicker;
 
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -77,22 +78,58 @@ public class FXMLDocumentController implements Initializable {
     @FXML private ComboBox combo_franja;
     @FXML private ComboBox combo_hora;
     @FXML private ComboBox combo_dia_semana;
-    @FXML private ComboBox combo_dia;
     @FXML private ComboBox combo_mes;
-    @FXML private ComboBox combo_ano;
-    @FXML private Label caption ;
+    @FXML private ComboBox combo_tipo_filtro_estrato;
+    @FXML private ComboBox combo_tipo_filtro_altitud;
+    //Varios
+    @FXML private Label caption;
     @FXML private MenuBar  menubar;
     @FXML private ToolBar toolbar;
+    @FXML private GridPane gridPane;
+    //Tabs
     @FXML private Tab tab_h_consumo;
     @FXML private Tab tab_h_precio;
     @FXML private Tab tab_h_pagos;
+    @FXML private Tab tab_filtros_generales;
+    @FXML private Tab tab_filtros_demo;
+    @FXML private Tab tab_filtros_geo;
+    @FXML private Tab tab_filtros_time;
+    @FXML private Tab tab_filtros_varios;
+    //Calendarios
+    @FXML private DatePicker fechaInicial;
+    @FXML private DatePicker fechaFinal;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         iniciar_varios();
         menuBar();
         iniciarCombos();
+        iniciarCalendarios();
     } 
+    
+    public void iniciarCalendarios(){
+        fechaInicial = new DatePicker(Locale.ENGLISH);
+        fechaFinal = new DatePicker(Locale.ENGLISH);
+        
+        fechaInicial.setDateFormat(new SimpleDateFormat("yyyy/MM/dd"));
+        //teqvime bugunku tarix ucun footere text verilmesi
+        fechaInicial.getCalendarView().todayButtonTextProperty().set("Bugun");
+        //teqvimde necenci heftenin oldugunun gosterilmesi-bu halda gosterilmir
+        fechaInicial.getCalendarView().setShowWeeks(false);
+        //teqvime stilin verilmesi
+        fechaInicial.getStylesheets().add("estilos/DatePicker.css");
+ 
+        fechaFinal.setDateFormat(new SimpleDateFormat("yyyy/MM/dd"));
+        //teqvime bugunku tarix ucun footere text verilmesi
+        fechaFinal.getCalendarView().todayButtonTextProperty().set("Bugun");
+        //teqvimde necenci heftenin oldugunun gosterilmesi-bu halda gosterilmir
+        fechaFinal.getCalendarView().setShowWeeks(false);
+        //teqvime stilin verilmesi
+        fechaFinal.getStylesheets().add("estilos/DatePicker.css");
+        
+        gridPane.add(fechaInicial, 1, 1);
+        gridPane.add(fechaFinal, 1, 2);
+    }
     
     public void iniciar_varios(){
         drilldownCss = FXMLDocumentController.class.getResource("/estilos/DrilldownChart.css").toExternalForm();
@@ -102,6 +139,12 @@ public class FXMLDocumentController implements Initializable {
         assert tab_h_consumo != null : "fx:id=\"tab_h_consumo\" was not injected: check your FXML file 'FXMLDocumetn.fxml'.";
         assert tab_h_precio != null : "fx:id=\"tab_h_precio\" was not injected: check your FXML file 'FXMLDocumetn.fxml'.";
         assert tab_h_pagos != null : "fx:id=\"tab_h_pagos\" was not injected: check your FXML file 'FXMLDocumetn.fxml'.";
+        assert tab_filtros_generales != null : "fx:id=\"tab_filtros_generales\" was not injected: check your FXML file 'FXMLDocumetn.fxml'.";
+        assert tab_filtros_demo != null : "fx:id=\"tab_filtros_demo\" was not injected: check your FXML file 'FXMLDocumetn.fxml'.";
+        assert tab_filtros_geo != null : "fx:id=\"tab_filtros_geo\" was not injected: check your FXML file 'FXMLDocumetn.fxml'.";
+        assert tab_filtros_time != null : "fx:id=\"tab_filtros_time\" was not injected: check your FXML file 'FXMLDocumetn.fxml'.";
+        assert tab_filtros_varios != null : "fx:id=\"tab_filtros_varios\" was not injected: check your FXML file 'FXMLDocumetn.fxml'.";
+        assert gridPane != null : "fx:id=\"gridPane\" was not injected: check your FXML file 'FXMLDocumetn.fxml'.";
     }
     
     public void iniciarCombos(){
@@ -202,41 +245,48 @@ public class FXMLDocumentController implements Initializable {
         combo_dia_semana.setItems(datoscombo_dia_semana);
         combo_dia_semana.getSelectionModel().selectLast();
         
-        assert combo_dia != null : "fx:id=\"combo_dia\" was not injected: check your FXML file 'FXMLDocumetn.fxml'.";      
-        ObservableList<String> datoscombo_dia=con.LlenarCommbo("select distinct (dia) from fecha");
-        datoscombo_dia.add("Todos");
-        combo_dia.getItems().clear();
-        combo_dia.setItems(datoscombo_dia);
-        combo_dia.getSelectionModel().selectLast();
-        
         assert combo_mes != null : "fx:id=\"combo_mes\" was not injected: check your FXML file 'FXMLDocumetn.fxml'.";      
-        ObservableList<String> datoscombo_mes=con.LlenarCommbo("select distinct (mes) from fecha");
-        datoscombo_mes.add("Todos");
+        ObservableList<String> datoscombo_mes = FXCollections.observableArrayList("Mayor", "Menor", "Igual", "Mayor o igual", "Menor o igual");
         combo_mes.getItems().clear();
         combo_mes.setItems(datoscombo_mes);
         combo_mes.getSelectionModel().selectLast();
         
-        assert combo_ano != null : "fx:id=\"combo_ano\" was not injected: check your FXML file 'FXMLDocumetn.fxml'.";      
-        ObservableList<String> datoscombo_ano=con.LlenarCommbo("select distinct (ano) from fecha");
-        datoscombo_ano.add("Todos");
-        combo_ano.getItems().clear();
-        combo_ano.setItems(datoscombo_ano);
-        combo_ano.getSelectionModel().selectLast();
+        assert combo_tipo_filtro_estrato != null : "fx:id=\"combo_tipo_filtro_estrato\" was not injected: check your FXML file 'FXMLDocumetn.fxml'.";
+        ObservableList<String> optionscombo_tipo_filtro_estrato = FXCollections.observableArrayList("Mayor", "Menor", "Igual", "Mayor o igual", "Menor o igual");
+        combo_tipo_filtro_estrato.setItems(optionscombo_tipo_filtro_estrato);
+        combo_tipo_filtro_estrato.getSelectionModel().selectLast();
+        
+        assert combo_tipo_filtro_altitud != null : "fx:id=\"combo_tipo_filtro_altitud\" was not injected: check your FXML file 'FXMLDocumetn.fxml'.";
+        ObservableList<String> optionscombo_tipo_filtro_altitud = FXCollections.observableArrayList("Por encima de", "Por debajo de", "Igual a", "Mayor o igual a", "Menor o igual a");
+        combo_tipo_filtro_altitud.setItems(optionscombo_tipo_filtro_altitud);
+        combo_tipo_filtro_altitud.getSelectionModel().selectLast();
     }
     
     /**
      * 
      */
     @FXML private void cambiarTabPagos(){
-//        if(tab_h_precio.isSelected()){
-//            
-//        }
-//        if(tab_h_consumo.isSelected()){
-//            
-//        }
-//        if(tab_h_pagos.isSelected()){
-//            
-//        }
+        if(tab_h_precio.isSelected()){
+            tab_filtros_generales.setDisable(false);
+            tab_filtros_demo.setDisable(true);
+            tab_filtros_geo.setDisable(false);
+            tab_filtros_time.setDisable(false);
+            tab_filtros_varios.setDisable(false);
+        }
+        if(tab_h_consumo.isSelected()){
+            tab_filtros_generales.setDisable(false);
+            tab_filtros_demo.setDisable(false);
+            tab_filtros_geo.setDisable(false);
+            tab_filtros_time.setDisable(false);
+            tab_filtros_varios.setDisable(true);
+        }
+        if(tab_h_pagos.isSelected()){
+            tab_filtros_generales.setDisable(false);
+            tab_filtros_demo.setDisable(false);
+            tab_filtros_geo.setDisable(true);
+            tab_filtros_time.setDisable(false);
+            tab_filtros_varios.setDisable(true);
+        }
     }
     
     /**
@@ -244,13 +294,25 @@ public class FXMLDocumentController implements Initializable {
      */
     @FXML private void cambiarTabConsumo(){
 //        if(tab_h_precio.isSelected()){
-//            
+//            tab_filtros_generales.setDisable(false);
+//            tab_filtros_demo.setDisable(true);
+//            tab_filtros_geo.setDisable(false);
+//            tab_filtros_time.setDisable(false);
+//            tab_filtros_varios.setDisable(false);
 //        }
 //        if(tab_h_consumo.isSelected()){
-//            
+//            tab_filtros_generales.setDisable(false);
+//            tab_filtros_demo.setDisable(false);
+//            tab_filtros_geo.setDisable(false);
+//            tab_filtros_time.setDisable(false);
+//            tab_filtros_varios.setDisable(true);
 //        }
 //        if(tab_h_pagos.isSelected()){
-//            
+//            tab_filtros_generales.setDisable(false);
+//            tab_filtros_demo.setDisable(false);
+//            tab_filtros_geo.setDisable(true);
+//            tab_filtros_time.setDisable(false);
+//            tab_filtros_varios.setDisable(true);
 //        }
     }
 
@@ -258,15 +320,27 @@ public class FXMLDocumentController implements Initializable {
      * 
      */
     @FXML private void cambiarTabPrecio(){
-//        if(tab_h_precio.isSelected()){
-//            
-//        }
-//        if(tab_h_consumo.isSelected()){
-//            
-//        }
-//        if(tab_h_pagos.isSelected()){
-//            
-//        }
+        if(tab_h_precio.isSelected()){
+            tab_filtros_generales.setDisable(false);
+            tab_filtros_demo.setDisable(true);
+            tab_filtros_geo.setDisable(false);
+            tab_filtros_time.setDisable(false);
+            tab_filtros_varios.setDisable(false);
+        }
+        if(tab_h_consumo.isSelected()){
+            tab_filtros_generales.setDisable(false);
+            tab_filtros_demo.setDisable(false);
+            tab_filtros_geo.setDisable(false);
+            tab_filtros_time.setDisable(false);
+            tab_filtros_varios.setDisable(true);
+        }
+        if(tab_h_pagos.isSelected()){
+            tab_filtros_generales.setDisable(false);
+            tab_filtros_demo.setDisable(false);
+            tab_filtros_geo.setDisable(true);
+            tab_filtros_time.setDisable(false);
+            tab_filtros_varios.setDisable(true);
+        }
     }
     
     /**
@@ -281,6 +355,7 @@ public class FXMLDocumentController implements Initializable {
         ArrayList<String> tablaSubConWhere = new ArrayList();
         ArrayList<String> id_tablaSubConWhere = new ArrayList();
         ArrayList<String> valoresWhere = new ArrayList();
+        ArrayList<String> subConsAdd = new ArrayList();
         
         if(combo_ciudad.getValue().equals("Todos"))
         {
@@ -315,6 +390,142 @@ public class FXMLDocumentController implements Initializable {
              valoresWhere.add(datosComboMedida.get(combo_medida.getSelectionModel().getSelectedIndex()));
         }
         
+        //Filtros Demograficos
+        String sqlCliente = "";
+        if(combo_tipo_cliente.getValue().equals("Todos") && combo_estrato.getValue().equals("Todos") && combo_barrio.getValue().equals("Todos"))
+        {
+        }
+        else
+        {
+            sqlCliente += "and id_cliente in (select id_cliente from cliente where 1 = 1";
+            
+            if(!combo_tipo_cliente.getValue().equals("Todos")){
+                sqlCliente += " and id_tipo_cliente in (select id_tipo_cliente from tipo_cliente where tipo_cliente = '"+combo_tipo_cliente.getValue()+"')";
+            }
+            
+            if(!combo_estrato.getValue().equals("Todos")){
+                sqlCliente += " and estrato ";
+                if(combo_tipo_filtro_estrato.getValue().equals("Mayor"))
+                {
+                    sqlCliente += "> " + combo_estrato.getValue();
+                }
+                if(combo_tipo_filtro_estrato.getValue().equals("Menor"))
+                {
+                    sqlCliente += "< " + combo_estrato.getValue();
+                }
+                if(combo_tipo_filtro_estrato.getValue().equals("Igual"))
+                {
+                    sqlCliente += "= " + combo_estrato.getValue();
+                }
+                if(combo_tipo_filtro_estrato.getValue().equals("Mayor o igual"))
+                {
+                    sqlCliente += ">= " + combo_estrato.getValue();
+                }
+                if(combo_tipo_filtro_estrato.getValue().equals("Menor o igual"))
+                {
+                    sqlCliente += "<= " + combo_estrato.getValue();
+                }         
+            }
+            
+            if(!combo_barrio.getValue().equals("Todos")){
+                sqlCliente += " and barrio = '"+combo_barrio.getValue()+"')";
+            }
+            sqlCliente+=")";
+            subConsAdd.add(sqlCliente);
+        }
+        
+        //Filtros Geograficos
+        String subConGeo = "";
+        if(combo_region.getValue().equals("Todos") && combo_ciudad.getValue().equals("Todos") && combo_altitud.getValue().equals("Todos") && combo_zona.getValue().equals("Todos"))
+        {
+        }
+        else
+        {
+            subConGeo += " and id_ciudad in (select id_ciudad from ciudad where 1=1 ";
+            if(!combo_region.getValue().equals("Todos"))
+            {
+                subConGeo += "and id_region in (select id_region from region where region = '"+combo_region.getValue()+"') ";
+            }
+            if(!combo_ciudad.getValue().equals("Todos"))
+            {
+                subConGeo += "and ciudad = '"+combo_ciudad.getValue()+"' ";
+            }
+            if(!combo_zona.getValue().equals("Todos"))
+            {
+                subConGeo += "and zona = '"+combo_zona.getValue()+"' ";
+            }
+            if(!combo_altitud.getValue().equals("Todos"))
+            {
+                subConGeo += "and altitud ";
+                if(combo_tipo_filtro_altitud.getValue().equals("Por encima de"))
+                {
+                    subConGeo += "> " + combo_altitud.getValue() + " ";
+                }
+                if(combo_tipo_filtro_altitud.getValue().equals("Por debajo de"))
+                {
+                    subConGeo += "< " + combo_altitud.getValue() + " ";
+                }
+                if(combo_tipo_filtro_altitud.getValue().equals("Igual a"))
+                {
+                    subConGeo += "= " + combo_altitud.getValue() + " ";
+                }
+                if(combo_tipo_filtro_altitud.getValue().equals("Mayor o igual a"))
+                {
+                    subConGeo += ">= " + combo_altitud.getValue() + " ";
+                }
+                if(combo_tipo_filtro_altitud.getValue().equals("Menor o igual a"))
+                {
+                    subConGeo += "<= " + combo_altitud.getValue() + " ";
+                }
+            }
+            subConGeo += ")";
+            subConsAdd.add(subConGeo);
+        }
+        
+        //Filtros de Tiempo
+        String subConTiempo = "";
+        if(combo_franja.getValue().equals("Todos") && combo_hora.getValue().equals("Todos") && combo_dia_semana.getValue().equals("Todos"))
+        {
+        }
+        else
+        {
+            subConTiempo += "and id_tiempo in (select id_tiempo from tiempo where 1=1 ";
+            if(!combo_franja.getValue().equals("Todos"))
+            {
+                subConTiempo += "and franja_horaria = '"+combo_franja.getValue()+"' ";
+            }
+            if(!combo_dia_semana.getValue().equals("Todos"))
+            {
+                subConTiempo += " and dia_semana = '"+combo_dia_semana.getValue()+"'";
+            }
+            if(!combo_hora.getValue().equals("Todos"))
+            {
+                sqlCliente += " and estrato ";
+                if(combo_mes.getValue().equals("Mayor"))
+                {
+                    subConTiempo += "> " + combo_hora.getValue();
+                }
+                if(combo_mes.getValue().equals("Menor"))
+                {
+                    subConTiempo += "< " + combo_hora.getValue();
+                }
+                if(combo_mes.getValue().equals("Igual"))
+                {
+                    subConTiempo += "= " + combo_hora.getValue();
+                }
+                if(combo_mes.getValue().equals("Mayor o igual"))
+                {
+                    subConTiempo += ">= " + combo_hora.getValue();
+                }
+                if(combo_mes.getValue().equals("Menor o igual"))
+                {
+                    subConTiempo += "<= " + combo_hora.getValue();
+                } 
+            }
+            subConTiempo += ")";
+            subConsAdd.add(subConTiempo);
+        }
+        
         String[] tablaSubConWhereA = new String[tablaSubConWhere.size()];
         tablaSubConWhereA = tablaSubConWhere.toArray(tablaSubConWhereA);
         
@@ -325,12 +536,58 @@ public class FXMLDocumentController implements Initializable {
         valoresWhereA = valoresWhere.toArray(valoresWhereA);
         
         String SQL = "";
-        SQL += consul.generarSQL(combo_tipo.getValue().toString().toUpperCase(), tipo_filtro.getValue().toString(), "id_"+tipo_filtro.getValue().toString(), tipo_filtro.getValue().toString(), tablaSubConWhereA, id_tablaSubConWhereA, valoresWhereA);
+        String fechaInicialS = "";
+        String fechaFinalS = "";
+        
+        if(fechaInicial.getSelectedDate() != null)
+        {
+            fechaInicialS = fechaInicial.getSelectedDate().toString();
+        }
+        
+        if(fechaFinal.getSelectedDate() != null)
+        {
+            fechaFinalS = fechaFinal.getSelectedDate().toString();
+        }
+        
+        SQL += consul.generarSQL(combo_tipo.getValue().toString().toUpperCase(), tipo_filtro.getValue().toString(), "id_"+tipo_filtro.getValue().toString(), tipo_filtro.getValue().toString(), tablaSubConWhereA, id_tablaSubConWhereA, valoresWhereA, fechaInicialS, fechaFinalS, subConsAdd);
         System.out.print(SQL);
         
         ObservableList<PieChart.Data> pieChartData = con.EjecutarConsultaPieChart(SQL);   
         ((Parent) mibarchar).getStylesheets().add(drilldownCss);        
         mibarchar.setData(pieChartData);      
+    }
+    
+    @FXML private void activarFiltro(){
+        if(!combo_estrato.getValue().equals("Todos"))
+        {
+            combo_tipo_filtro_estrato.setDisable(false);
+        }
+        else
+        {
+            combo_tipo_filtro_estrato.setDisable(true);
+        }
+    }
+    
+    @FXML private void activarFiltroAltitud(){
+        if(!combo_altitud.getValue().equals("Todos"))
+        {
+            combo_tipo_filtro_altitud.setDisable(false);
+        }
+        else
+        {
+            combo_tipo_filtro_altitud.setDisable(true);
+        }
+    }
+    
+    @FXML private void activaFiltroHora(){
+        if(!combo_hora.getValue().equals("Todos"))
+        {
+            combo_mes.setDisable(false);
+        }
+        else
+        {
+            combo_mes.setDisable(true);
+        }
     }
     
     /**
