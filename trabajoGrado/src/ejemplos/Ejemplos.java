@@ -7,15 +7,9 @@
 package ejemplos;
 
 import javafx.application.Application;
-import javafx.event.EventHandler;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.chart.PieChart;
-import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -27,10 +21,11 @@ public class Ejemplos extends Application {
     
     
    
+    @Override
     public void start(Stage stage) throws Exception {
-        
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/FXMLDocument.fxml"));
-     
+        ejecutarGui();
+      Parent root = FXMLLoader.load(getClass().getResource("/fxml/FXMLDocument.fxml"));
+//       Parent root = FXMLLoader.load(getClass().getResource("/fxml/estilos.fxml"));
         stage.initStyle(StageStyle.DECORATED);
         Scene scene;
         scene = new Scene(root); 
@@ -41,6 +36,12 @@ public class Ejemplos extends Application {
         stage.setMaxHeight(900);
         stage.setMaxWidth(800);
         stage.show();
+        
+    }
+    public void ejecutarGui(){
+        
+    
+    
     }
    
 
@@ -54,6 +55,8 @@ public class Ejemplos extends Application {
      */
     public static void main(String[] args) {
         launch(args);
+       
+        
     }
     
 }

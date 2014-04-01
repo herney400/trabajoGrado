@@ -266,7 +266,9 @@ public class FXMLDocumentController implements Initializable {
      * 
      */
     @FXML private void cambiarTabPagos(){
-        if(tab_h_precio.isSelected()){
+        
+        
+         if(tab_h_precio.isSelected()){
             tab_filtros_generales.setDisable(false);
             tab_filtros_demo.setDisable(true);
             tab_filtros_geo.setDisable(false);
@@ -292,7 +294,17 @@ public class FXMLDocumentController implements Initializable {
     /**
      * 
      */
-    @FXML private void cambiarTabConsumo(){
+    @FXML private void cambiarTabConsu(){
+//       assert tab_filtros_generales != null : "fx:id=\"toolbar\" was not injected: check your FXML file 'FXMLDocumetn.fxml'.";
+//         assert tab_filtros_demo != null : "fx:id=\"tab_filtros_demo\" was not injected: check your FXML file 'FXMLDocumetn.fxml'.";
+//         assert tab_filtros_geo != null : "fx:id=\"tab_filtros_geo\" was not injected: check your FXML file 'FXMLDocumetn.fxml'.";
+//         assert tab_filtros_time != null : "fx:id=\"tab_filtros_time\" was not injected: check your FXML file 'FXMLDocumetn.fxml'.";
+//         assert tab_filtros_varios != null : "fx:id=\"tab_filtros_varios\" was not injected: check your FXML file 'FXMLDocumetn.fxml'.";
+//         
+//         assert tab_h_precio != null : "fx:id=\"tab_h_precio\" was not injected: check your FXML file 'FXMLDocumetn.fxml'.";
+//          assert tab_h_consumo != null : "fx:id=\"tab_h_consumo\" was not injected: check your FXML file 'FXMLDocumetn.fxml'.";
+//        assert tab_h_pagos != null : "fx:id=\"tab_h_pagos\" was not injected: check your FXML file 'FXMLDocumetn.fxml'.";
+//       
 //        if(tab_h_precio.isSelected()){
 //            tab_filtros_generales.setDisable(false);
 //            tab_filtros_demo.setDisable(true);
