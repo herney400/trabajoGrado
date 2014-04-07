@@ -34,12 +34,31 @@ public class Ejemplos extends Application {
       //Parent root = FXMLLoader.load(getClass().getResource("/fxml/FXMLDocument.fxml"));
         
         
-        ScreensController mainContainer = new ScreensController();
+         ScreensController mainContainer = new ScreensController();
         mainContainer.loadScreen(Ejemplos.screen1ID, Ejemplos.screen1File);
         mainContainer.loadScreen(Ejemplos.screen2ID, Ejemplos.screen2File);
         mainContainer.loadScreen(Ejemplos.screen3ID, Ejemplos.screen3File);
         
-        mainContainer.setScreen(Ejemplos.screen2ID);
+        mainContainer.setScreen(Ejemplos.screen3ID);
+       
+//        
+//   //   Parent root = FXMLLoader.load(getClass().getResource("/fxml/guiRed.fxml"));
+//        Group root = new Group();
+// //       stage.initStyle(StageStyle.DECORATED);
+//         System.out.println("---------------------->");
+////        Scene scene;
+////        scene = new Scene(root); 
+////        scene.getStylesheets().add(Ejemplos.class.getResource("/estilos/guired.css").toExternalForm());
+////        stage.setScene(scene);
+        stage.setMinWidth(900);
+        stage.setMinHeight(800);
+        stage.setMaxHeight(900);
+        stage.setMaxWidth(800);
+////        root.getChildren().addAll(mainContainer);
+//        Scene scene = new Scene(root);
+//        stage.setScene(scene);
+//        stage.show();
+        
         Group root = new Group();
         root.getChildren().addAll(mainContainer);
         Scene scene = new Scene(root);

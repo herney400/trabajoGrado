@@ -10,7 +10,12 @@ import fxml.ControlledScreen;
 import fxml.ScreensController;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 /**
  * FXML Controller class
@@ -18,19 +23,35 @@ import javafx.fxml.Initializable;
  * @author arcilapalacios
  */
 public class PrincipalController implements Initializable, ControlledScreen  {
-  ScreensController myController;
+  
+    ScreensController myController;    
+    Image imageMineria = new Image(getClass().getResourceAsStream("/imagenes/mineria.png"));  
+    Image imageRed = new Image(getClass().getResourceAsStream("/imagenes/red.jpg"));  
+    @FXML Button botonMineria = new Button();
+    @FXML Button botonRed = new Button();
+    
+    
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+           botonMineria.setGraphic(new ImageView(imageMineria));
+           botonRed.setGraphic(new ImageView(imageRed));
     }    
 
     @Override
     public void setScreenParent(ScreensController screenPage) {
-  myController=screenPage;
+      myController=screenPage;
 
      }
+     @FXML
+    private void goToScreen3(ActionEvent event){
+       myController.setScreen(Ejemplos.screen1ID);
+    }
+     @FXML
+    private void irared(ActionEvent event){
+       myController.setScreen(Ejemplos.screen2ID);
+    }
     
 }

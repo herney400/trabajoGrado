@@ -7,7 +7,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="658.0000999999975" prefWidth="838.9999000000025" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ejemplos.PrincipalController">
+<AnchorPane id="AnchorPane" prefHeight="320.0000999999975" prefWidth="474.9999000000025" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ejemplos.PrincipalController">
+  <children>
+    <Button fx:id="botonMineria" layoutX="60.0" layoutY="136.0" mnemonicParsing="false" onAction="#goToScreen3" prefHeight="50.0" prefWidth="110.0" text="Button" />
+    <Button id="botonred" fx:id="botonRed" layoutX="266.0" layoutY="135.0" mnemonicParsing="false" onAction="#irared" prefHeight="50.0" prefWidth="121.0" text="Button" />
+  </children>
   <stylesheets>
     <URL value="@principal.css" />
   </stylesheets>
