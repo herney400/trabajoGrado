@@ -6,16 +6,15 @@ package ejemplos;
  * and open the template in the editor.
  */
 
-import com.sun.media.jfxmedia.logging.Logger;
 import eu.schudt.javafx.controls.calendar.DatePicker;
+import fxml.ControlledScreen;
+import fxml.ScreensController;
 import java.awt.Desktop;
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
  
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -33,12 +32,16 @@ import org.neuroph.nnet.MultiLayerPerceptron;
  *
  * @author N550J
  */
-public class GuiRedController implements Initializable {
+public class GuiRedController implements Initializable, ControlledScreen{
    @FXML private AnchorPane anchorP;
    @FXML private Button boton_cargar_red;
    @FXML private DatePicker fechaInicial;
    @FXML private DatePicker fechaFinal;
    @FXML private GridPane gridPane;
+   @FXML Button botonMineria;
+   @FXML Button botonInteligencia;
+    ScreensController myController;
+   
    
    private Desktop desktop=Desktop.getDesktop();
     /**
@@ -100,6 +103,24 @@ public class GuiRedController implements Initializable {
     
          NeuralNetwork neuralNet = new MultiLayerPerceptron(4, 9, 1);
 
+    }
+//    @Override
+//    public void setScreenParent(ScreensController screenParent){
+//       
+//    }
+    
+    @FXML
+    private void irMineria(ActionEvent event){
+       myController.setScreen(ejemplos.Ejemplos.screen1ID);
+    }
+     @FXML
+    private void irInteligencia(ActionEvent event){
+       myController.setScreen(ejemplos.Ejemplos.screen2ID);
+    }
+    
+    @Override
+    public void setScreenParent(ScreensController screenPage) {
+         myController = screenPage;
     }
     
 }

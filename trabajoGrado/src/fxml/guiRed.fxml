@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" fx:id="anchorP" prefHeight="653.0" prefWidth="884.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ejemplos.GuiRedController">
+<AnchorPane id="AnchorPane" fx:id="anchorP" minWidth="882.0" prefHeight="653.0" prefWidth="967.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ejemplos.GuiRedController">
   <children>
     <Text layoutX="401.0" layoutY="41.0" scaleX="11.254455620257632" scaleY="2.754282917278512" strokeType="OUTSIDE" strokeWidth="0.0" text="Predicción" />
     <GridPane id="GridPane" layoutX="14.0" layoutY="338.0">
@@ -19,7 +19,7 @@
         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
       </rowConstraints>
     </GridPane>
-    <SplitPane id="SplitPane" layoutX="19.0" layoutY="313.0" prefHeight="340.0000999999975" prefWidth="851.0">
+    <SplitPane id="SplitPane" layoutX="6.0" layoutY="306.0" prefHeight="341.0" prefWidth="961.0">
       <items>
         <TabPane prefHeight="337.0" prefWidth="849.0" tabClosingPolicy="UNAVAILABLE">
           <tabs>
@@ -27,9 +27,9 @@
               <content>
                 <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="308.0" prefWidth="849.0">
                   <children>
-                    <TitledPane animated="false" layoutX="4.0" layoutY="6.0" minWidth="393.0" prefHeight="288.0" prefWidth="402.0" text="Entrenar red">
+                    <TitledPane animated="false" layoutX="487.0" layoutY="8.0" minWidth="393.0" prefHeight="288.0" prefWidth="459.0" text="Entrenar red">
                       <content>
-                        <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="220.0" prefWidth="403.0">
+                        <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="262.0" prefWidth="442.0">
                           <children>
                             <GridPane layoutX="14.0" layoutY="25.0" prefHeight="108.0" prefWidth="354.0">
                               <children>
@@ -60,7 +60,8 @@
                         </AnchorPane>
                       </content>
                     </TitledPane>
-                    <TitledPane animated="false" layoutX="430.0" layoutY="6.0" minWidth="414.0" prefHeight="288.0" prefWidth="414.0" text="Entrenada">
+                    <Accordion expandedPane="$null" layoutX="14.0" layoutY="14.0" />
+                    <TitledPane animated="false" layoutX="4.0" layoutY="7.0" minWidth="414.0" prefHeight="288.0" prefWidth="463.0" text="Entrenada">
                       <content>
                         <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="221.0" prefWidth="414.0">
                           <children>

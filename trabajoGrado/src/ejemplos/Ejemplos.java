@@ -6,8 +6,10 @@
 
 package ejemplos;
 
+import fxml.ScreensController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -20,22 +22,30 @@ import javafx.stage.StageStyle;
 public class Ejemplos extends Application {
     
     
-   
+    public static String screen1ID = "FXMLDocument";
+    public static String screen1File = "FXMLDocument.fxml";
+    public static String screen2ID = "guiRed";
+    public static String screen2File = "guiRed.fxml";
+    public static String screen3ID = "principal";
+    public static String screen3File = "principal.fxml";
     @Override
     public void start(Stage stage) throws Exception {
         ejecutarGui();
-      Parent root = FXMLLoader.load(getClass().getResource("/fxml/FXMLDocument.fxml"));
-//       Parent root = FXMLLoader.load(getClass().getResource("/fxml/estilos.fxml"));
-        stage.initStyle(StageStyle.DECORATED);
-        Scene scene;
-        scene = new Scene(root); 
-        scene.getStylesheets().add(Ejemplos.class.getResource("/estilos/estilos.css").toExternalForm());
+      //Parent root = FXMLLoader.load(getClass().getResource("/fxml/FXMLDocument.fxml"));
+        
+        
+        ScreensController mainContainer = new ScreensController();
+        mainContainer.loadScreen(Ejemplos.screen1ID, Ejemplos.screen1File);
+        mainContainer.loadScreen(Ejemplos.screen2ID, Ejemplos.screen2File);
+        mainContainer.loadScreen(Ejemplos.screen3ID, Ejemplos.screen3File);
+        
+        mainContainer.setScreen(Ejemplos.screen2ID);
+        Group root = new Group();
+        root.getChildren().addAll(mainContainer);
+        Scene scene = new Scene(root);
         stage.setScene(scene);
-        stage.setMinWidth(900);
-        stage.setMinHeight(800);
-        stage.setMaxHeight(900);
-        stage.setMaxWidth(800);
         stage.show();
+        
         
     }
     public void ejecutarGui(){

@@ -9,6 +9,8 @@ package ejemplos;
 import accesoDatos.Conexion;
 import accesoDatos.Consultas;
 import eu.schudt.javafx.controls.calendar.DatePicker;
+import fxml.ControlledScreen;
+import fxml.ScreensController;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -54,8 +56,8 @@ import javafx.util.Duration;
  *
  * @author N550J
  */
-public class FXMLDocumentController implements Initializable {
-     
+public class FXMLDocumentController   implements Initializable, ControlledScreen {
+     ScreensController myController;
     @FXML private PieChart mibarchar ;
     @FXML private LineChart<Double, Double> graph;
     @FXML private BubbleChart<Double, Double> buble;
@@ -735,4 +737,9 @@ public class FXMLDocumentController implements Initializable {
 
         menubar.getMenus().addAll(menu1);
    }
+
+    @Override
+    public void setScreenParent(ScreensController screenPage) {
+        myController=screenPage;
+    }
 }
