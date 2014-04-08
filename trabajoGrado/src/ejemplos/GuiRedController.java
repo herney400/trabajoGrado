@@ -20,6 +20,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
@@ -39,7 +42,9 @@ public class GuiRedController implements Initializable, ControlledScreen{
    @FXML private DatePicker fechaFinal;
    @FXML private GridPane gridPane;
    @FXML Button botonMineria;
-   @FXML Button botonInteligencia;
+   @FXML Button botonInteligencia,botonguardarRed,botonmine,botonred ;
+   @FXML TableView<Double>  tablaEntrenamiento;
+   
     ScreensController myController;
    
    
@@ -51,6 +56,14 @@ public class GuiRedController implements Initializable, ControlledScreen{
     public void initialize(URL url, ResourceBundle rb) {
        assert  boton_cargar_red != null : "fx:id=\"toolbar\" was not injected: check your FXML file 'guiRed.fxml'.";
        iniciarCalendarios();
+       
+       Image imageDecline = new Image(getClass().getResourceAsStream("/imagenes/guardar.png"));
+       Image imageMine = new Image(getClass().getResourceAsStream("/imagenes/mineri.png"));
+        Image imageRed = new Image(getClass().getResourceAsStream("/imagenes/red3.png")); 
+       botonguardarRed.setGraphic(new ImageView(imageDecline));
+       botonmine.setGraphic(new ImageView(imageMine));
+       botonred.setGraphic(new ImageView(imageRed));
+       
     }
     
     @FXML public void cargarRed(ActionEvent E){
@@ -111,16 +124,20 @@ public class GuiRedController implements Initializable, ControlledScreen{
     
     @FXML
     private void irMineria(ActionEvent event){
-       myController.setScreen(ejemplos.Ejemplos.screen1ID);
+       myController.setScreen(Ejemplos.screen1ID);
     }
      @FXML
     private void irInteligencia(ActionEvent event){
-       myController.setScreen(ejemplos.Ejemplos.screen2ID);
+       myController.setScreen(Ejemplos.screen2ID);
     }
     
     @Override
     public void setScreenParent(ScreensController screenPage) {
          myController = screenPage;
+    }
+    public void cargarDatosEntrenamiento(ActionEvent event){
+    
+    
     }
     
 }

@@ -24,77 +24,91 @@
                           <content>
                             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="564.0" prefWidth="895.0">
                               <children>
-                                <TitledPane animated="false" layoutX="4.0" layoutY="3.0" minWidth="393.0" prefHeight="261.0" prefWidth="411.0" text="Entrenar red">
-                                  <content>
-                                    <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="262.0" prefWidth="442.0">
-                                      <children>
-                                        <GridPane layoutX="14.0" layoutY="25.0" prefHeight="153.0" prefWidth="354.0">
-                                          <children>
-                                            <Label prefWidth="62.0" text="Error" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                                            <TextField prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                                            <Label text="Max Iteraciones" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                                            <TextField prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                            <Label text="Tasa de Aprendizaje" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                                            <Label text="Numero capas" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                                            <Label text="Neuronas Capa Entrada" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                                            <TextField prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                            <TextField prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                            <TextField prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                            <Button mnemonicParsing="false" text="Guarda Red" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                                            <Label text="Neuronas Capa Oculta" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-                                            <TextField prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                                          </children>
-                                          <columnConstraints>
-                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                          </columnConstraints>
-                                          <rowConstraints>
-                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          </rowConstraints>
-                                        </GridPane>
-                                      </children>
-                                    </AnchorPane>
-                                  </content>
-                                </TitledPane>
                                 <Accordion expandedPane="$null" layoutX="14.0" layoutY="14.0" />
-                                <TitledPane animated="false" layoutX="4.0" layoutY="267.0" minWidth="411.0" prefHeight="288.0" prefWidth="411.0" text="Entrenada">
-                                  <content>
-                                    <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="262.0" prefWidth="427.0">
-                                      <children>
-                                        <GridPane fx:id="gridPane" layoutX="14.0" layoutY="14.0" prefHeight="75.0" prefWidth="380.0">
-                                          <children>
-                                            <Label prefWidth="79.13037109375" text="Fecha :" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                                            <Button fx:id="boton_cargar_red" mnemonicParsing="false" onAction="#cargarRed" prefWidth="100.0" text="Cargar Red" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                                            <TextField prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                                          </children>
-                                          <columnConstraints>
-                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                          </columnConstraints>
-                                          <rowConstraints>
-                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          </rowConstraints>
-                                        </GridPane>
-                                      </children>
-                                    </AnchorPane>
-                                  </content>
-                                </TitledPane>
                                 <Accordion expandedPane="$null" layoutX="423.0" layoutY="5.0" />
-                                <TableView layoutX="423.0" layoutY="269.0" prefHeight="285.0" prefWidth="546.0">
-                                  <columns>
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                  </columns>
-                                </TableView>
+                                <Accordion layoutX="7.0" layoutY="284.0" prefHeight="270.0" prefWidth="972.0">
+                                  <expandedPane>
+                                    <TitledPane fx:id="x1" animated="false" text="Entrenar">
+                                      <content>
+                                        <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                          <children>
+                                            <GridPane layoutX="4.0" layoutY="14.0" prefHeight="178.0" prefWidth="390.0">
+                                              <children>
+                                                <Label prefWidth="62.0" text="Error" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                                <TextField prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                <Label text="Max Iteraciones" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                                                <TextField prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <Label text="Tasa de Aprendizaje" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                                                <Label text="Numero capas" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                                                <Label text="Neuronas Capa Entrada" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                                                <TextField prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                <TextField prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                <TextField prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                <Button fx:id="botonguardarRed" mnemonicParsing="false" prefWidth="129.0" text="Entrenar" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                                                <Label text="Neuronas Capa Oculta" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                                                <TextField prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                                <Label prefWidth="188.0" text="Conjunto de Entrenamiento" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                                <Button id="botonguardarRed" fx:id="boton_cargar_conjunto" mnemonicParsing="false" onAction="#cargarDatosEntrenamiento" text="Cargar conjunto" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                                              </children>
+                                              <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="220.0" minWidth="10.0" prefWidth="188.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="191.0" minWidth="10.0" prefWidth="191.0" />
+                                              </columnConstraints>
+                                              <rowConstraints>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                              </rowConstraints>
+                                            </GridPane>
+                                          </children>
+                                        </AnchorPane>
+                                      </content>
+                                    </TitledPane>
+                                  </expandedPane>
+                                  <panes>
+                                    <fx:reference source="x1" />
+                                    <TitledPane animated="false" text="Cargar Red">
+                                      <content>
+                                        <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                          <children>
+                                            <GridPane fx:id="gridPane" layoutX="14.0" layoutY="14.0" prefHeight="75.0" prefWidth="380.0">
+                                              <children>
+                                                <Label prefWidth="79.13037109375" text="Fecha :" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                                <Button fx:id="boton_cargar_red" mnemonicParsing="false" onAction="#cargarRed" prefWidth="100.0" text="Cargar Red" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                                                <TextField prefWidth="200.0" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                              </children>
+                                              <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                              </columnConstraints>
+                                              <rowConstraints>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                              </rowConstraints>
+                                            </GridPane>
+                                          </children>
+                                        </AnchorPane>
+                                      </content>
+                                    </TitledPane>
+                                  </panes>
+                                </Accordion>
+                                <ScrollPane id="ScrollPane" layoutX="7.0" layoutY="5.0" prefHeight="272.0" prefViewportHeight="271.0" prefViewportWidth="972.0">
+                                  <content>
+                                    <TableView fx:id="tablaEntrenamiento" prefHeight="271.0" prefWidth="972.0">
+                                      <columns>
+                                        <TableColumn prefWidth="75.0" text="Column X" />
+                                        <TableColumn prefWidth="75.0" text="Column X" />
+                                      </columns>
+                                    </TableView>
+                                  </content>
+                                </ScrollPane>
                               </children>
                             </AnchorPane>
                           </content>
@@ -126,8 +140,8 @@
     </TabPane>
     <ToolBar layoutX="1.0" layoutY="0.0" prefHeight="38.0" prefWidth="977.0">
       <items>
-        <Button mnemonicParsing="false" text="Button" />
-        <Button mnemonicParsing="false" text="Button" />
+        <Button id="mineria" fx:id="botonmine" mnemonicParsing="false" onAction="#irMineria" text="Mineria" />
+        <Button fx:id="botonred" mnemonicParsing="false" onAction="#irInteligencia" text="Inteligencia" />
       </items>
     </ToolBar>
   </children>
