@@ -6,13 +6,15 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="320.0000999999975" prefWidth="474.9999000000025" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ejemplos.PrincipalController">
+<AnchorPane id="AnchorPane" fx:id="anchor" maxWidth="-1.0" prefHeight="665.0" prefWidth="897.0" style="" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ejemplos.PrincipalController">
   <children>
-    <Button fx:id="botonMineria" layoutX="60.0" layoutY="136.0" mnemonicParsing="false" onAction="#goToScreen3" prefHeight="50.0" prefWidth="110.0" text="Button" />
-    <Button id="botonred" fx:id="botonRed" layoutX="266.0" layoutY="135.0" mnemonicParsing="false" onAction="#irared" prefHeight="50.0" prefWidth="121.0" text="Button" />
+    <Button fx:id="botonMineria" layoutX="131.0" layoutY="200.0" mnemonicParsing="false" onAction="#goToScreen3" prefHeight="158.0" prefWidth="153.0" text="" />
+    <Button id="botonred" fx:id="botonRed" layoutX="428.0" layoutY="200.0" mnemonicParsing="false" onAction="#irared" prefHeight="158.0" prefWidth="132.0" text="" />
+    <Text fx:id="texto" layoutX="360.0" layoutY="57.0" scaleX="9.293802024375566" scaleY="2.516097589949811" strokeType="OUTSIDE" strokeWidth="0.0" text="Energia" />
   </children>
   <stylesheets>
-    <URL value="@principal.css" />
+    <URL value="@../estilos/principal.css" />
   </stylesheets>
 </AnchorPane>

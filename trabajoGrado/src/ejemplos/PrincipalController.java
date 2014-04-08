@@ -16,6 +16,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import sun.plugin.javascript.navig.AnchorArray;
 
 /**
  * FXML Controller class
@@ -29,7 +31,7 @@ public class PrincipalController implements Initializable, ControlledScreen  {
     Image imageRed = new Image(getClass().getResourceAsStream("/imagenes/red.jpg"));  
     @FXML Button botonMineria = new Button();
     @FXML Button botonRed = new Button();
-    
+     @FXML private AnchorPane anchor;
     
     /**
      * Initializes the controller class.
@@ -38,6 +40,8 @@ public class PrincipalController implements Initializable, ControlledScreen  {
     public void initialize(URL url, ResourceBundle rb) {
            botonMineria.setGraphic(new ImageView(imageMineria));
            botonRed.setGraphic(new ImageView(imageRed));
+           assert anchor != null : "fx:id=\"toolbar\" was not injected: check your FXML file 'principal.fxml'.";
+           anchor.getStylesheets().add("/estilos/principal.css");
     }    
 
     @Override

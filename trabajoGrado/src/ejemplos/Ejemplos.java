@@ -50,10 +50,10 @@ public class Ejemplos extends Application {
 ////        scene = new Scene(root); 
 ////        scene.getStylesheets().add(Ejemplos.class.getResource("/estilos/guired.css").toExternalForm());
 ////        stage.setScene(scene);
-        stage.setMinWidth(900);
-        stage.setMinHeight(800);
-        stage.setMaxHeight(900);
-        stage.setMaxWidth(800);
+//        stage.setMinWidth(900);
+//        stage.setMinHeight(800);
+//        stage.setMaxHeight(900);
+//        stage.setMaxWidth(800);
 ////        root.getChildren().addAll(mainContainer);
 //        Scene scene = new Scene(root);
 //        stage.setScene(scene);
