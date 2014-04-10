@@ -15,6 +15,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import javafx.collections.ObservableList;
  
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -136,8 +137,6 @@ public class GuiRedController implements Initializable, ControlledScreen{
          myController = screenPage;
     }
     public void cargarDatosEntrenamiento(ActionEvent event){
-    
-    
     }
     
 }

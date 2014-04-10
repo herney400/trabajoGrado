@@ -3,6 +3,7 @@
 <?import java.lang.*?>
 <?import java.net.*?>
 <?import java.util.*?>
+<?import javafx.collections.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -28,6 +29,111 @@
                                 <Accordion expandedPane="$null" layoutX="423.0" layoutY="5.0" />
                                 <Accordion layoutX="7.0" layoutY="284.0" prefHeight="270.0" prefWidth="972.0">
                                   <expandedPane>
+                                    <TitledPane id="x1" fx:id="x2" animated="false" text="Predecir">
+                                      <content>
+                                        <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                          <children>
+                                            <GridPane layoutX="331.0" layoutY="14.0" prefWidth="329.0">
+                                              <children>
+                                                <Label text="Fenomeno Climatico" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                                <ComboBox fx:id="combo_fen_climatico" prefWidth="153.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                                  <items>
+                                                    <FXCollections fx:factory="observableArrayList">
+                                                      <String fx:value="Item 1" />
+                                                      <String fx:value="Item 2" />
+                                                      <String fx:value="Item 3" />
+                                                    </FXCollections>
+                                                  </items>
+                                                </ComboBox>
+                                                <Label text="Franja horaria" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                                <ComboBox fx:id="combo_fran_horaria" prefWidth="153.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                  <items>
+                                                    <FXCollections fx:factory="observableArrayList">
+                                                      <String fx:value="Item 1" />
+                                                      <String fx:value="Item 2" />
+                                                      <String fx:value="Item 3" />
+                                                    </FXCollections>
+                                                  </items>
+                                                </ComboBox>
+                                              </children>
+                                              <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="170.0" minWidth="10.0" prefWidth="170.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="237.0" minWidth="10.0" prefWidth="159.0" />
+                                              </columnConstraints>
+                                              <rowConstraints>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                              </rowConstraints>
+                                            </GridPane>
+                                            <GridPane layoutX="25.0" layoutY="10.0" prefWidth="273.0">
+                                              <children>
+                                                <Label text="Dia de la semana" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                                <ComboBox fx:id="combo_dia_semana" prefWidth="153.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                                  <items>
+                                                    <FXCollections fx:factory="observableArrayList">
+                                                      <String fx:value="Item 1" />
+                                                      <String fx:value="Item 2" />
+                                                      <String fx:value="Item 3" />
+                                                    </FXCollections>
+                                                  </items>
+                                                </ComboBox>
+                                                <Label text="Altitud" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                                <ComboBox fx:id="combo_altitud" prefWidth="153.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                  <items>
+                                                    <FXCollections fx:factory="observableArrayList">
+                                                      <String fx:value="Item 1" />
+                                                      <String fx:value="Item 2" />
+                                                      <String fx:value="Item 3" />
+                                                    </FXCollections>
+                                                  </items>
+                                                </ComboBox>
+                                                <Label text="Tipo de consumidor" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                                                <ComboBox fx:id="combo_tipo_comsumidor" prefWidth="153.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                  <items>
+                                                    <FXCollections fx:factory="observableArrayList">
+                                                      <String fx:value="Item 1" />
+                                                      <String fx:value="Item 2" />
+                                                      <String fx:value="Item 3" />
+                                                    </FXCollections>
+                                                  </items>
+                                                </ComboBox>
+                                              </children>
+                                              <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                              </columnConstraints>
+                                              <rowConstraints>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                              </rowConstraints>
+                                            </GridPane>
+                                            <Label layoutX="682.0" layoutY="20.0" text="Estrato" />
+                                            <ComboBox fx:id="comobo_estrato" layoutX="751.0" layoutY="21.0" prefWidth="113.0">
+                                              <items>
+                                                <FXCollections fx:factory="observableArrayList">
+                                                  <String fx:value="Item 1" />
+                                                  <String fx:value="Item 2" />
+                                                  <String fx:value="Item 3" />
+                                                </FXCollections>
+                                              </items>
+                                            </ComboBox>
+                                            <Label layoutX="682.0" layoutY="48.0" text="Mes" />
+                                            <ComboBox fx:id="combo_mes" layoutX="751.0" layoutY="51.0" prefWidth="113.0">
+                                              <items>
+                                                <FXCollections fx:factory="observableArrayList">
+                                                  <String fx:value="Item 1" />
+                                                  <String fx:value="Item 2" />
+                                                  <String fx:value="Item 3" />
+                                                </FXCollections>
+                                              </items>
+                                            </ComboBox>
+                                          </children>
+                                        </AnchorPane>
+                                      </content>
+                                    </TitledPane>
+                                  </expandedPane>
+                                  <panes>
                                     <TitledPane fx:id="x1" animated="false" text="Entrenar">
                                       <content>
                                         <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
@@ -70,9 +176,6 @@
                                         </AnchorPane>
                                       </content>
                                     </TitledPane>
-                                  </expandedPane>
-                                  <panes>
-                                    <fx:reference source="x1" />
                                     <TitledPane animated="false" text="Cargar Red">
                                       <content>
                                         <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
@@ -97,6 +200,7 @@
                                         </AnchorPane>
                                       </content>
                                     </TitledPane>
+                                    <fx:reference source="x2" />
                                   </panes>
                                 </Accordion>
                                 <ScrollPane id="ScrollPane" layoutX="7.0" layoutY="5.0" prefHeight="272.0" prefViewportHeight="271.0" prefViewportWidth="972.0">
