@@ -26,6 +26,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.chart.BarChart;
 import javafx.scene.chart.BubbleChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
@@ -57,13 +58,18 @@ import javafx.util.Duration;
  * @author N550J
  */
 public class FXMLDocumentController   implements Initializable, ControlledScreen {
-     ScreensController myController;
-    @FXML private PieChart mibarchar ;
+    
+    ScreensController myController;
     @FXML private LineChart<Double, Double> graph;
     @FXML private BubbleChart<Double, Double> buble;
     static final Duration ANIMATION_DURATION = new Duration(500);
     static final double ANIMATION_DISTANCE = 0.15;
     String drilldownCss="";
+    
+    //Graficos
+    @FXML private PieChart mibarchar;
+    @FXML private PieChart chart_Pagos;
+    @FXML private PieChart chart_Precio;
     
     //Consultas ComboBox
     @FXML private ComboBox tipo_filtro;
@@ -152,6 +158,8 @@ public class FXMLDocumentController   implements Initializable, ControlledScreen
     public void iniciarCombos(){
         Conexion con = new Conexion(); 
         assert mibarchar != null : "fx:id=\"mibarchar\" was not injected: check your FXML file 'FXMLDocumetn.fxml'.";
+        assert chart_Pagos != null : "fx:id=\"chart_Pagos\" was not injected: check your FXML file 'FXMLDocumetn.fxml'.";
+        assert chart_Precio != null : "fx:id=\"chart_Precio\" was not injected: check your FXML file 'FXMLDocumetn.fxml'.";
         
         assert combo_tipo != null : "fx:id=\"combo_tipo\" was not injected: check your FXML file 'FXMLDocumetn.fxml'.";
         ObservableList<String> optionsTipo = FXCollections.observableArrayList("consolidado", "promedio");
@@ -268,8 +276,7 @@ public class FXMLDocumentController   implements Initializable, ControlledScreen
      * 
      */
     @FXML private void cambiarTabPagos(){
-        
-        
+                
          if(tab_h_precio.isSelected()){
             tab_filtros_generales.setDisable(false);
             tab_filtros_demo.setDisable(true);
@@ -296,38 +303,29 @@ public class FXMLDocumentController   implements Initializable, ControlledScreen
     /**
      * 
      */
-    @FXML private void cambiarTabConsu(){
-//       assert tab_filtros_generales != null : "fx:id=\"toolbar\" was not injected: check your FXML file 'FXMLDocumetn.fxml'.";
-//         assert tab_filtros_demo != null : "fx:id=\"tab_filtros_demo\" was not injected: check your FXML file 'FXMLDocumetn.fxml'.";
-//         assert tab_filtros_geo != null : "fx:id=\"tab_filtros_geo\" was not injected: check your FXML file 'FXMLDocumetn.fxml'.";
-//         assert tab_filtros_time != null : "fx:id=\"tab_filtros_time\" was not injected: check your FXML file 'FXMLDocumetn.fxml'.";
-//         assert tab_filtros_varios != null : "fx:id=\"tab_filtros_varios\" was not injected: check your FXML file 'FXMLDocumetn.fxml'.";
-//         
-//         assert tab_h_precio != null : "fx:id=\"tab_h_precio\" was not injected: check your FXML file 'FXMLDocumetn.fxml'.";
-//          assert tab_h_consumo != null : "fx:id=\"tab_h_consumo\" was not injected: check your FXML file 'FXMLDocumetn.fxml'.";
-//        assert tab_h_pagos != null : "fx:id=\"tab_h_pagos\" was not injected: check your FXML file 'FXMLDocumetn.fxml'.";
-//       
-//        if(tab_h_precio.isSelected()){
-//            tab_filtros_generales.setDisable(false);
-//            tab_filtros_demo.setDisable(true);
-//            tab_filtros_geo.setDisable(false);
-//            tab_filtros_time.setDisable(false);
-//            tab_filtros_varios.setDisable(false);
-//        }
-//        if(tab_h_consumo.isSelected()){
-//            tab_filtros_generales.setDisable(false);
-//            tab_filtros_demo.setDisable(false);
-//            tab_filtros_geo.setDisable(false);
-//            tab_filtros_time.setDisable(false);
-//            tab_filtros_varios.setDisable(true);
-//        }
-//        if(tab_h_pagos.isSelected()){
-//            tab_filtros_generales.setDisable(false);
-//            tab_filtros_demo.setDisable(false);
-//            tab_filtros_geo.setDisable(true);
-//            tab_filtros_time.setDisable(false);
-//            tab_filtros_varios.setDisable(true);
-//        }
+    @FXML private void cambiarTabConsu(){ 
+        
+        if(tab_h_precio.isSelected()){
+            tab_filtros_generales.setDisable(false);
+            tab_filtros_demo.setDisable(true);
+            tab_filtros_geo.setDisable(false);
+            tab_filtros_time.setDisable(false);
+            tab_filtros_varios.setDisable(false);
+        }
+        if(tab_h_consumo.isSelected()){
+            tab_filtros_generales.setDisable(false);
+            tab_filtros_demo.setDisable(false);
+            tab_filtros_geo.setDisable(false);
+            tab_filtros_time.setDisable(false);
+            tab_filtros_varios.setDisable(true);
+        }
+        if(tab_h_pagos.isSelected()){
+            tab_filtros_generales.setDisable(false);
+            tab_filtros_demo.setDisable(false);
+            tab_filtros_geo.setDisable(true);
+            tab_filtros_time.setDisable(false);
+            tab_filtros_varios.setDisable(true);
+        }
     }
 
     /**
@@ -366,209 +364,534 @@ public class FXMLDocumentController   implements Initializable, ControlledScreen
         Conexion con = new Conexion();
         Consultas consul = new Consultas();
         
-        ArrayList<String> tablaSubConWhere = new ArrayList();
-        ArrayList<String> id_tablaSubConWhere = new ArrayList();
-        ArrayList<String> valoresWhere = new ArrayList();
-        ArrayList<String> subConsAdd = new ArrayList();
-        
-        if(combo_ciudad.getValue().equals("Todos"))
-        {
-        }
-        else
-        {
-            tablaSubConWhere.add("ciudad");
-            id_tablaSubConWhere.add("id_ciudad");
-            ObservableList<String> datosComboValues=con.LlenarCommbo("select id_ciudad from ciudad order by id_ciudad");            
-            valoresWhere.add(datosComboValues.get(combo_ciudad.getSelectionModel().getSelectedIndex()));
-        }
-        
-        if(combo_empresa.getValue().equals("Todos"))
-        {
-        }
-        else
-        {
-             tablaSubConWhere.add("empresa");
-             id_tablaSubConWhere.add("id_empresa");
-             ObservableList<String> datosComboEmpresa=con.LlenarCommbo("select id_empresa from empresa order by id_empresa");
-             valoresWhere.add(datosComboEmpresa.get(combo_empresa.getSelectionModel().getSelectedIndex()));
-        }
-        
-        if(combo_medida.getValue().equals("Todos"))
-        {
-        }
-        else
-        {
-             tablaSubConWhere.add("medida");
-             id_tablaSubConWhere.add("id_medida");
-             ObservableList<String> datosComboMedida=con.LlenarCommbo("select id_medida from medida order by id_medida");
-             valoresWhere.add(datosComboMedida.get(combo_medida.getSelectionModel().getSelectedIndex()));
-        }
-        
-        //Filtros Demograficos
-        String sqlCliente = "";
-        if(combo_tipo_cliente.getValue().equals("Todos") && combo_estrato.getValue().equals("Todos") && combo_barrio.getValue().equals("Todos"))
-        {
-        }
-        else
-        {
-            sqlCliente += "and id_cliente in (select id_cliente from cliente where 1 = 1";
-            
-            if(!combo_tipo_cliente.getValue().equals("Todos")){
-                sqlCliente += " and id_tipo_cliente in (select id_tipo_cliente from tipo_cliente where tipo_cliente = '"+combo_tipo_cliente.getValue()+"')";
-            }
-            
-            if(!combo_estrato.getValue().equals("Todos")){
-                sqlCliente += " and estrato ";
-                if(combo_tipo_filtro_estrato.getValue().equals("Mayor"))
-                {
-                    sqlCliente += "> " + combo_estrato.getValue();
-                }
-                if(combo_tipo_filtro_estrato.getValue().equals("Menor"))
-                {
-                    sqlCliente += "< " + combo_estrato.getValue();
-                }
-                if(combo_tipo_filtro_estrato.getValue().equals("Igual"))
-                {
-                    sqlCliente += "= " + combo_estrato.getValue();
-                }
-                if(combo_tipo_filtro_estrato.getValue().equals("Mayor o igual"))
-                {
-                    sqlCliente += ">= " + combo_estrato.getValue();
-                }
-                if(combo_tipo_filtro_estrato.getValue().equals("Menor o igual"))
-                {
-                    sqlCliente += "<= " + combo_estrato.getValue();
-                }         
-            }
-            
-            if(!combo_barrio.getValue().equals("Todos")){
-                sqlCliente += " and barrio = '"+combo_barrio.getValue()+"')";
-            }
-            sqlCliente+=")";
-            subConsAdd.add(sqlCliente);
-        }
-        
-        //Filtros Geograficos
-        String subConGeo = "";
-        if(combo_region.getValue().equals("Todos") && combo_ciudad.getValue().equals("Todos") && combo_altitud.getValue().equals("Todos") && combo_zona.getValue().equals("Todos"))
-        {
-        }
-        else
-        {
-            subConGeo += " and id_ciudad in (select id_ciudad from ciudad where 1=1 ";
-            if(!combo_region.getValue().equals("Todos"))
+        if(tab_h_consumo.isSelected())
+        {        
+            ArrayList<String> tablaSubConWhere = new ArrayList();
+            ArrayList<String> id_tablaSubConWhere = new ArrayList();
+            ArrayList<String> valoresWhere = new ArrayList();
+            ArrayList<String> subConsAdd = new ArrayList();
+
+            if(combo_ciudad.getValue().equals("Todos"))
             {
-                subConGeo += "and id_region in (select id_region from region where region = '"+combo_region.getValue()+"') ";
             }
-            if(!combo_ciudad.getValue().equals("Todos"))
+            else
             {
-                subConGeo += "and ciudad = '"+combo_ciudad.getValue()+"' ";
+                tablaSubConWhere.add("ciudad");
+                id_tablaSubConWhere.add("id_ciudad");
+                ObservableList<String> datosComboValues=con.LlenarCommbo("select id_ciudad from ciudad order by id_ciudad");            
+                valoresWhere.add(datosComboValues.get(combo_ciudad.getSelectionModel().getSelectedIndex()));
             }
-            if(!combo_zona.getValue().equals("Todos"))
+
+            if(combo_empresa.getValue().equals("Todos"))
             {
-                subConGeo += "and zona = '"+combo_zona.getValue()+"' ";
             }
-            if(!combo_altitud.getValue().equals("Todos"))
+            else
             {
-                subConGeo += "and altitud ";
-                if(combo_tipo_filtro_altitud.getValue().equals("Por encima de"))
-                {
-                    subConGeo += "> " + combo_altitud.getValue() + " ";
-                }
-                if(combo_tipo_filtro_altitud.getValue().equals("Por debajo de"))
-                {
-                    subConGeo += "< " + combo_altitud.getValue() + " ";
-                }
-                if(combo_tipo_filtro_altitud.getValue().equals("Igual a"))
-                {
-                    subConGeo += "= " + combo_altitud.getValue() + " ";
-                }
-                if(combo_tipo_filtro_altitud.getValue().equals("Mayor o igual a"))
-                {
-                    subConGeo += ">= " + combo_altitud.getValue() + " ";
-                }
-                if(combo_tipo_filtro_altitud.getValue().equals("Menor o igual a"))
-                {
-                    subConGeo += "<= " + combo_altitud.getValue() + " ";
-                }
+                 tablaSubConWhere.add("empresa");
+                 id_tablaSubConWhere.add("id_empresa");
+                 ObservableList<String> datosComboEmpresa=con.LlenarCommbo("select id_empresa from empresa order by id_empresa");
+                 valoresWhere.add(datosComboEmpresa.get(combo_empresa.getSelectionModel().getSelectedIndex()));
             }
-            subConGeo += ")";
-            subConsAdd.add(subConGeo);
+
+            if(combo_medida.getValue().equals("Todos"))
+            {
+            }
+            else
+            {
+                 tablaSubConWhere.add("medida");
+                 id_tablaSubConWhere.add("id_medida");
+                 ObservableList<String> datosComboMedida=con.LlenarCommbo("select id_medida from medida order by id_medida");
+                 valoresWhere.add(datosComboMedida.get(combo_medida.getSelectionModel().getSelectedIndex()));
+            }
+
+            //Filtros Demograficos
+            String sqlCliente = "";
+            if(combo_tipo_cliente.getValue().equals("Todos") && combo_estrato.getValue().equals("Todos") && combo_barrio.getValue().equals("Todos"))
+            {
+            }
+            else
+            {
+                sqlCliente += "and id_cliente in (select id_cliente from cliente where 1 = 1";
+
+                if(!combo_tipo_cliente.getValue().equals("Todos")){
+                    sqlCliente += " and id_tipo_cliente in (select id_tipo_cliente from tipo_cliente where tipo_cliente = '"+combo_tipo_cliente.getValue()+"')";
+                }
+
+                if(!combo_estrato.getValue().equals("Todos")){
+                    sqlCliente += " and estrato ";
+                    if(combo_tipo_filtro_estrato.getValue().equals("Mayor"))
+                    {
+                        sqlCliente += "> " + combo_estrato.getValue();
+                    }
+                    if(combo_tipo_filtro_estrato.getValue().equals("Menor"))
+                    {
+                        sqlCliente += "< " + combo_estrato.getValue();
+                    }
+                    if(combo_tipo_filtro_estrato.getValue().equals("Igual"))
+                    {
+                        sqlCliente += "= " + combo_estrato.getValue();
+                    }
+                    if(combo_tipo_filtro_estrato.getValue().equals("Mayor o igual"))
+                    {
+                        sqlCliente += ">= " + combo_estrato.getValue();
+                    }
+                    if(combo_tipo_filtro_estrato.getValue().equals("Menor o igual"))
+                    {
+                        sqlCliente += "<= " + combo_estrato.getValue();
+                    }         
+                }
+
+                if(!combo_barrio.getValue().equals("Todos")){
+                    sqlCliente += " and barrio = '"+combo_barrio.getValue()+"')";
+                }
+                sqlCliente+=")";
+                subConsAdd.add(sqlCliente);
+            }
+
+            //Filtros Geograficos
+            String subConGeo = "";
+            if(combo_region.getValue().equals("Todos") && combo_ciudad.getValue().equals("Todos") && combo_altitud.getValue().equals("Todos") && combo_zona.getValue().equals("Todos"))
+            {
+            }
+            else
+            {
+                subConGeo += " and id_ciudad in (select id_ciudad from ciudad where 1=1 ";
+                if(!combo_region.getValue().equals("Todos"))
+                {
+                    subConGeo += "and id_region in (select id_region from region where region = '"+combo_region.getValue()+"') ";
+                }
+                if(!combo_ciudad.getValue().equals("Todos"))
+                {
+                    subConGeo += "and ciudad = '"+combo_ciudad.getValue()+"' ";
+                }
+                if(!combo_zona.getValue().equals("Todos"))
+                {
+                    subConGeo += "and zona = '"+combo_zona.getValue()+"' ";
+                }
+                if(!combo_altitud.getValue().equals("Todos"))
+                {
+                    subConGeo += "and altitud ";
+                    if(combo_tipo_filtro_altitud.getValue().equals("Por encima de"))
+                    {
+                        subConGeo += "> " + combo_altitud.getValue() + " ";
+                    }
+                    if(combo_tipo_filtro_altitud.getValue().equals("Por debajo de"))
+                    {
+                        subConGeo += "< " + combo_altitud.getValue() + " ";
+                    }
+                    if(combo_tipo_filtro_altitud.getValue().equals("Igual a"))
+                    {
+                        subConGeo += "= " + combo_altitud.getValue() + " ";
+                    }
+                    if(combo_tipo_filtro_altitud.getValue().equals("Mayor o igual a"))
+                    {
+                        subConGeo += ">= " + combo_altitud.getValue() + " ";
+                    }
+                    if(combo_tipo_filtro_altitud.getValue().equals("Menor o igual a"))
+                    {
+                        subConGeo += "<= " + combo_altitud.getValue() + " ";
+                    }
+                }
+                subConGeo += ")";
+                subConsAdd.add(subConGeo);
+            }
+
+            //Filtros de Tiempo
+            String subConTiempo = "";
+            if(combo_franja.getValue().equals("Todos") && combo_hora.getValue().equals("Todos") && combo_dia_semana.getValue().equals("Todos"))
+            {
+            }
+            else
+            {
+                subConTiempo += "and id_tiempo in (select id_tiempo from tiempo where 1=1 ";
+                if(!combo_franja.getValue().equals("Todos"))
+                {
+                    subConTiempo += "and franja_horaria = '"+combo_franja.getValue()+"' ";
+                }
+                if(!combo_dia_semana.getValue().equals("Todos"))
+                {
+                    subConTiempo += " and dia_semana = '"+combo_dia_semana.getValue()+"'";
+                }
+                if(!combo_hora.getValue().equals("Todos"))
+                {
+                    subConTiempo += " and estrato ";
+                    if(combo_mes.getValue().equals("Mayor"))
+                    {
+                        subConTiempo += "> " + combo_hora.getValue();
+                    }
+                    if(combo_mes.getValue().equals("Menor"))
+                    {
+                        subConTiempo += "< " + combo_hora.getValue();
+                    }
+                    if(combo_mes.getValue().equals("Igual"))
+                    {
+                        subConTiempo += "= " + combo_hora.getValue();
+                    }
+                    if(combo_mes.getValue().equals("Mayor o igual"))
+                    {
+                        subConTiempo += ">= " + combo_hora.getValue();
+                    }
+                    if(combo_mes.getValue().equals("Menor o igual"))
+                    {
+                        subConTiempo += "<= " + combo_hora.getValue();
+                    } 
+                }
+                subConTiempo += ")";
+                subConsAdd.add(subConTiempo);
+            }
+
+            String[] tablaSubConWhereA = new String[tablaSubConWhere.size()];
+            tablaSubConWhereA = tablaSubConWhere.toArray(tablaSubConWhereA);
+
+            String [] id_tablaSubConWhereA = new String[id_tablaSubConWhere.size()];
+            id_tablaSubConWhereA = id_tablaSubConWhere.toArray(id_tablaSubConWhereA);
+
+            String [] valoresWhereA = new String[valoresWhere.size()];
+            valoresWhereA = valoresWhere.toArray(valoresWhereA);
+
+            String SQL = "";
+            String fechaInicialS = "";
+            String fechaFinalS = "";
+
+            if(fechaInicial.getSelectedDate() != null)
+            {
+                fechaInicialS = fechaInicial.getSelectedDate().toString();
+            }
+
+            if(fechaFinal.getSelectedDate() != null)
+            {
+                fechaFinalS = fechaFinal.getSelectedDate().toString();
+            }
+
+            SQL += consul.generarSQL(combo_tipo.getValue().toString().toUpperCase(), tipo_filtro.getValue().toString(), "id_"+tipo_filtro.getValue().toString(), tipo_filtro.getValue().toString(), tablaSubConWhereA, id_tablaSubConWhereA, valoresWhereA, fechaInicialS, fechaFinalS, subConsAdd, "historico_consumo", "total_consumo", "consumo");
+            System.out.print(SQL);
+
+            ObservableList<PieChart.Data> pieChartData = con.EjecutarConsultaPieChart(SQL);   
+            ((Parent) mibarchar).getStylesheets().add(drilldownCss);        
+            mibarchar.setData(pieChartData);
         }
         
-        //Filtros de Tiempo
-        String subConTiempo = "";
-        if(combo_franja.getValue().equals("Todos") && combo_hora.getValue().equals("Todos") && combo_dia_semana.getValue().equals("Todos"))
-        {
-        }
-        else
-        {
-            subConTiempo += "and id_tiempo in (select id_tiempo from tiempo where 1=1 ";
-            if(!combo_franja.getValue().equals("Todos"))
+        if(tab_h_precio.isSelected())
+        {        
+            ArrayList<String> tablaSubConWhere = new ArrayList();
+            ArrayList<String> id_tablaSubConWhere = new ArrayList();
+            ArrayList<String> valoresWhere = new ArrayList();
+            ArrayList<String> subConsAdd = new ArrayList();
+
+            if(combo_ciudad.getValue().equals("Todos"))
             {
-                subConTiempo += "and franja_horaria = '"+combo_franja.getValue()+"' ";
             }
-            if(!combo_dia_semana.getValue().equals("Todos"))
+            else
             {
-                subConTiempo += " and dia_semana = '"+combo_dia_semana.getValue()+"'";
+                tablaSubConWhere.add("ciudad");
+                id_tablaSubConWhere.add("id_ciudad");
+                ObservableList<String> datosComboValues=con.LlenarCommbo("select id_ciudad from ciudad order by id_ciudad");            
+                valoresWhere.add(datosComboValues.get(combo_ciudad.getSelectionModel().getSelectedIndex()));
             }
-            if(!combo_hora.getValue().equals("Todos"))
+
+            if(combo_empresa.getValue().equals("Todos"))
             {
-                sqlCliente += " and estrato ";
-                if(combo_mes.getValue().equals("Mayor"))
-                {
-                    subConTiempo += "> " + combo_hora.getValue();
-                }
-                if(combo_mes.getValue().equals("Menor"))
-                {
-                    subConTiempo += "< " + combo_hora.getValue();
-                }
-                if(combo_mes.getValue().equals("Igual"))
-                {
-                    subConTiempo += "= " + combo_hora.getValue();
-                }
-                if(combo_mes.getValue().equals("Mayor o igual"))
-                {
-                    subConTiempo += ">= " + combo_hora.getValue();
-                }
-                if(combo_mes.getValue().equals("Menor o igual"))
-                {
-                    subConTiempo += "<= " + combo_hora.getValue();
-                } 
             }
-            subConTiempo += ")";
-            subConsAdd.add(subConTiempo);
+            else
+            {
+                 tablaSubConWhere.add("empresa");
+                 id_tablaSubConWhere.add("id_empresa");
+                 ObservableList<String> datosComboEmpresa=con.LlenarCommbo("select id_empresa from empresa order by id_empresa");
+                 valoresWhere.add(datosComboEmpresa.get(combo_empresa.getSelectionModel().getSelectedIndex()));
+            }
+
+            if(combo_medida.getValue().equals("Todos"))
+            {
+            }
+            else
+            {
+                 tablaSubConWhere.add("medida");
+                 id_tablaSubConWhere.add("id_medida");
+                 ObservableList<String> datosComboMedida=con.LlenarCommbo("select id_medida from medida order by id_medida");
+                 valoresWhere.add(datosComboMedida.get(combo_medida.getSelectionModel().getSelectedIndex()));
+            }
+
+            //Filtros Geograficos
+            String subConGeo = "";
+            if(combo_region.getValue().equals("Todos") && combo_ciudad.getValue().equals("Todos") && combo_altitud.getValue().equals("Todos") && combo_zona.getValue().equals("Todos"))
+            {
+            }
+            else
+            {
+                subConGeo += " and id_ciudad in (select id_ciudad from ciudad where 1=1 ";
+                if(!combo_region.getValue().equals("Todos"))
+                {
+                    subConGeo += "and id_region in (select id_region from region where region = '"+combo_region.getValue()+"') ";
+                }
+                if(!combo_ciudad.getValue().equals("Todos"))
+                {
+                    subConGeo += "and ciudad = '"+combo_ciudad.getValue()+"' ";
+                }
+                if(!combo_zona.getValue().equals("Todos"))
+                {
+                    subConGeo += "and zona = '"+combo_zona.getValue()+"' ";
+                }
+                if(!combo_altitud.getValue().equals("Todos"))
+                {
+                    subConGeo += "and altitud ";
+                    if(combo_tipo_filtro_altitud.getValue().equals("Por encima de"))
+                    {
+                        subConGeo += "> " + combo_altitud.getValue() + " ";
+                    }
+                    if(combo_tipo_filtro_altitud.getValue().equals("Por debajo de"))
+                    {
+                        subConGeo += "< " + combo_altitud.getValue() + " ";
+                    }
+                    if(combo_tipo_filtro_altitud.getValue().equals("Igual a"))
+                    {
+                        subConGeo += "= " + combo_altitud.getValue() + " ";
+                    }
+                    if(combo_tipo_filtro_altitud.getValue().equals("Mayor o igual a"))
+                    {
+                        subConGeo += ">= " + combo_altitud.getValue() + " ";
+                    }
+                    if(combo_tipo_filtro_altitud.getValue().equals("Menor o igual a"))
+                    {
+                        subConGeo += "<= " + combo_altitud.getValue() + " ";
+                    }
+                }
+                subConGeo += ")";
+                subConsAdd.add(subConGeo);
+            }
+
+            //Filtros de Tiempo
+            String subConTiempo = "";
+            if(combo_franja.getValue().equals("Todos") && combo_hora.getValue().equals("Todos") && combo_dia_semana.getValue().equals("Todos"))
+            {
+            }
+            else
+            {
+                subConTiempo += "and id_tiempo in (select id_tiempo from tiempo where 1=1 ";
+                if(!combo_franja.getValue().equals("Todos"))
+                {
+                    subConTiempo += "and franja_horaria = '"+combo_franja.getValue()+"' ";
+                }
+                if(!combo_dia_semana.getValue().equals("Todos"))
+                {
+                    subConTiempo += " and dia_semana = '"+combo_dia_semana.getValue()+"'";
+                }
+                if(!combo_hora.getValue().equals("Todos"))
+                {
+                    subConTiempo += " and estrato ";
+                    if(combo_mes.getValue().equals("Mayor"))
+                    {
+                        subConTiempo += "> " + combo_hora.getValue();
+                    }
+                    if(combo_mes.getValue().equals("Menor"))
+                    {
+                        subConTiempo += "< " + combo_hora.getValue();
+                    }
+                    if(combo_mes.getValue().equals("Igual"))
+                    {
+                        subConTiempo += "= " + combo_hora.getValue();
+                    }
+                    if(combo_mes.getValue().equals("Mayor o igual"))
+                    {
+                        subConTiempo += ">= " + combo_hora.getValue();
+                    }
+                    if(combo_mes.getValue().equals("Menor o igual"))
+                    {
+                        subConTiempo += "<= " + combo_hora.getValue();
+                    } 
+                }
+                subConTiempo += ")";
+                subConsAdd.add(subConTiempo);
+            }
+
+            String[] tablaSubConWhereA = new String[tablaSubConWhere.size()];
+            tablaSubConWhereA = tablaSubConWhere.toArray(tablaSubConWhereA);
+
+            String [] id_tablaSubConWhereA = new String[id_tablaSubConWhere.size()];
+            id_tablaSubConWhereA = id_tablaSubConWhere.toArray(id_tablaSubConWhereA);
+
+            String [] valoresWhereA = new String[valoresWhere.size()];
+            valoresWhereA = valoresWhere.toArray(valoresWhereA);
+
+            String SQL = "";
+            String fechaInicialS = "";
+            String fechaFinalS = "";
+
+            if(fechaInicial.getSelectedDate() != null)
+            {
+                fechaInicialS = fechaInicial.getSelectedDate().toString();
+            }
+
+            if(fechaFinal.getSelectedDate() != null)
+            {
+                fechaFinalS = fechaFinal.getSelectedDate().toString();
+            }
+
+            SQL += consul.generarSQL(combo_tipo.getValue().toString().toUpperCase(), tipo_filtro.getValue().toString(), "id_"+tipo_filtro.getValue().toString(), tipo_filtro.getValue().toString(), tablaSubConWhereA, id_tablaSubConWhereA, valoresWhereA, fechaInicialS, fechaFinalS, subConsAdd, "historico_precio", "precio", "precio");
+            System.out.print(SQL);
+
+            ObservableList<PieChart.Data> pieChartData = con.EjecutarConsultaPieChart(SQL);   
+            ((Parent) chart_Precio).getStylesheets().add(drilldownCss);        
+            chart_Precio.setData(pieChartData);
         }
         
-        String[] tablaSubConWhereA = new String[tablaSubConWhere.size()];
-        tablaSubConWhereA = tablaSubConWhere.toArray(tablaSubConWhereA);
-        
-        String [] id_tablaSubConWhereA = new String[id_tablaSubConWhere.size()];
-        id_tablaSubConWhereA = id_tablaSubConWhere.toArray(id_tablaSubConWhereA);
-        
-        String [] valoresWhereA = new String[valoresWhere.size()];
-        valoresWhereA = valoresWhere.toArray(valoresWhereA);
-        
-        String SQL = "";
-        String fechaInicialS = "";
-        String fechaFinalS = "";
-        
-        if(fechaInicial.getSelectedDate() != null)
-        {
-            fechaInicialS = fechaInicial.getSelectedDate().toString();
+        if(tab_h_pagos.isSelected())
+        {        
+            ArrayList<String> tablaSubConWhere = new ArrayList();
+            ArrayList<String> id_tablaSubConWhere = new ArrayList();
+            ArrayList<String> valoresWhere = new ArrayList();
+            ArrayList<String> subConsAdd = new ArrayList();
+
+            if(combo_ciudad.getValue().equals("Todos"))
+            {
+            }
+            else
+            {
+                tablaSubConWhere.add("ciudad");
+                id_tablaSubConWhere.add("id_ciudad");
+                ObservableList<String> datosComboValues=con.LlenarCommbo("select id_ciudad from ciudad order by id_ciudad");            
+                valoresWhere.add(datosComboValues.get(combo_ciudad.getSelectionModel().getSelectedIndex()));
+            }
+
+            if(combo_empresa.getValue().equals("Todos"))
+            {
+            }
+            else
+            {
+                 tablaSubConWhere.add("empresa");
+                 id_tablaSubConWhere.add("id_empresa");
+                 ObservableList<String> datosComboEmpresa=con.LlenarCommbo("select id_empresa from empresa order by id_empresa");
+                 valoresWhere.add(datosComboEmpresa.get(combo_empresa.getSelectionModel().getSelectedIndex()));
+            }
+
+            if(combo_medida.getValue().equals("Todos"))
+            {
+            }
+            else
+            {
+                 tablaSubConWhere.add("medida");
+                 id_tablaSubConWhere.add("id_medida");
+                 ObservableList<String> datosComboMedida=con.LlenarCommbo("select id_medida from medida order by id_medida");
+                 valoresWhere.add(datosComboMedida.get(combo_medida.getSelectionModel().getSelectedIndex()));
+            }
+
+            //Filtros Demograficos
+            String sqlCliente = "";
+            if(combo_tipo_cliente.getValue().equals("Todos") && combo_estrato.getValue().equals("Todos") && combo_barrio.getValue().equals("Todos"))
+            {
+            }
+            else
+            {
+                sqlCliente += "and id_cliente in (select id_cliente from cliente where 1 = 1";
+
+                if(!combo_tipo_cliente.getValue().equals("Todos")){
+                    sqlCliente += " and id_tipo_cliente in (select id_tipo_cliente from tipo_cliente where tipo_cliente = '"+combo_tipo_cliente.getValue()+"')";
+                }
+
+                if(!combo_estrato.getValue().equals("Todos")){
+                    sqlCliente += " and estrato ";
+                    if(combo_tipo_filtro_estrato.getValue().equals("Mayor"))
+                    {
+                        sqlCliente += "> " + combo_estrato.getValue();
+                    }
+                    if(combo_tipo_filtro_estrato.getValue().equals("Menor"))
+                    {
+                        sqlCliente += "< " + combo_estrato.getValue();
+                    }
+                    if(combo_tipo_filtro_estrato.getValue().equals("Igual"))
+                    {
+                        sqlCliente += "= " + combo_estrato.getValue();
+                    }
+                    if(combo_tipo_filtro_estrato.getValue().equals("Mayor o igual"))
+                    {
+                        sqlCliente += ">= " + combo_estrato.getValue();
+                    }
+                    if(combo_tipo_filtro_estrato.getValue().equals("Menor o igual"))
+                    {
+                        sqlCliente += "<= " + combo_estrato.getValue();
+                    }         
+                }
+
+                if(!combo_barrio.getValue().equals("Todos")){
+                    sqlCliente += " and barrio = '"+combo_barrio.getValue()+"')";
+                }
+                sqlCliente+=")";
+                subConsAdd.add(sqlCliente);
+            }
+
+            //Filtros de Tiempo
+            String subConTiempo = "";
+            if(combo_franja.getValue().equals("Todos") && combo_hora.getValue().equals("Todos") && combo_dia_semana.getValue().equals("Todos"))
+            {
+            }
+            else
+            {
+                subConTiempo += "and id_tiempo in (select id_tiempo from tiempo where 1=1 ";
+                if(!combo_franja.getValue().equals("Todos"))
+                {
+                    subConTiempo += "and franja_horaria = '"+combo_franja.getValue()+"' ";
+                }
+                if(!combo_dia_semana.getValue().equals("Todos"))
+                {
+                    subConTiempo += " and dia_semana = '"+combo_dia_semana.getValue()+"'";
+                }
+                if(!combo_hora.getValue().equals("Todos"))
+                {
+                    subConTiempo += " and estrato ";
+                    if(combo_mes.getValue().equals("Mayor"))
+                    {
+                        subConTiempo += "> " + combo_hora.getValue();
+                    }
+                    if(combo_mes.getValue().equals("Menor"))
+                    {
+                        subConTiempo += "< " + combo_hora.getValue();
+                    }
+                    if(combo_mes.getValue().equals("Igual"))
+                    {
+                        subConTiempo += "= " + combo_hora.getValue();
+                    }
+                    if(combo_mes.getValue().equals("Mayor o igual"))
+                    {
+                        subConTiempo += ">= " + combo_hora.getValue();
+                    }
+                    if(combo_mes.getValue().equals("Menor o igual"))
+                    {
+                        subConTiempo += "<= " + combo_hora.getValue();
+                    } 
+                }
+                subConTiempo += ")";
+                subConsAdd.add(subConTiempo);
+            }
+
+            String[] tablaSubConWhereA = new String[tablaSubConWhere.size()];
+            tablaSubConWhereA = tablaSubConWhere.toArray(tablaSubConWhereA);
+
+            String [] id_tablaSubConWhereA = new String[id_tablaSubConWhere.size()];
+            id_tablaSubConWhereA = id_tablaSubConWhere.toArray(id_tablaSubConWhereA);
+
+            String [] valoresWhereA = new String[valoresWhere.size()];
+            valoresWhereA = valoresWhere.toArray(valoresWhereA);
+
+            String SQL = "";
+            String fechaInicialS = "";
+            String fechaFinalS = "";
+
+            if(fechaInicial.getSelectedDate() != null)
+            {
+                fechaInicialS = fechaInicial.getSelectedDate().toString();
+            }
+
+            if(fechaFinal.getSelectedDate() != null)
+            {
+                fechaFinalS = fechaFinal.getSelectedDate().toString();
+            }
+
+            SQL += consul.generarSQL(combo_tipo.getValue().toString().toUpperCase(), tipo_filtro.getValue().toString(), "id_"+tipo_filtro.getValue().toString(), tipo_filtro.getValue().toString(), tablaSubConWhereA, id_tablaSubConWhereA, valoresWhereA, fechaInicialS, fechaFinalS, subConsAdd, "historico_Pagos", "valor", "valor");
+            System.out.print(SQL);
+
+            ObservableList<PieChart.Data> pieChartData = con.EjecutarConsultaPieChart(SQL);   
+            ((Parent) chart_Pagos).getStylesheets().add(drilldownCss);        
+            chart_Pagos.setData(pieChartData);
         }
-        
-        if(fechaFinal.getSelectedDate() != null)
-        {
-            fechaFinalS = fechaFinal.getSelectedDate().toString();
-        }
-        
-        SQL += consul.generarSQL(combo_tipo.getValue().toString().toUpperCase(), tipo_filtro.getValue().toString(), "id_"+tipo_filtro.getValue().toString(), tipo_filtro.getValue().toString(), tablaSubConWhereA, id_tablaSubConWhereA, valoresWhereA, fechaInicialS, fechaFinalS, subConsAdd);
-        System.out.print(SQL);
-        
-        ObservableList<PieChart.Data> pieChartData = con.EjecutarConsultaPieChart(SQL);   
-        ((Parent) mibarchar).getStylesheets().add(drilldownCss);        
-        mibarchar.setData(pieChartData);      
     }
     
     @FXML private void activarFiltro(){

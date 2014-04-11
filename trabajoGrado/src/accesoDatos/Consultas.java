@@ -27,13 +27,16 @@ public class Consultas {
      * @param fechaInicial
      * @param fechaFinal
      * @param whereAux
+     * @param tabla
+     * @param campoTabla
+     * @param renombre
      * @return 
      */
-    public String generarSQL(String tipoConsulta, String tablaSubCon, String id_tablaSubCon, String nombreCampo, String [] tablaSubConWhere, String [] id_tablaSubConWhere, String [] valoresWhere, String fechaInicial, String fechaFinal, ArrayList whereAux){
+    public String generarSQL(String tipoConsulta, String tablaSubCon, String id_tablaSubCon, String nombreCampo, String [] tablaSubConWhere, String [] id_tablaSubConWhere, String [] valoresWhere, String fechaInicial, String fechaFinal, ArrayList whereAux, String tabla, String campoTabla, String renombre){
         String SQL = "";
 
-        SQL += generarSelect(tipoConsulta, tablaSubCon, id_tablaSubCon, nombreCampo);
-        SQL += " from historico_consumo ";
+        SQL += generarSelect(tipoConsulta, tablaSubCon, id_tablaSubCon, nombreCampo, campoTabla, tabla, renombre);
+        SQL += "from " + tabla + " ";
         SQL += generarWhere(tablaSubConWhere, id_tablaSubConWhere, valoresWhere);
         
         for(int i=0; i<whereAux.size(); i++)
@@ -42,8 +45,8 @@ public class Consultas {
         }
         
         SQL += generarSubConsultaFecha(fechaInicial, fechaFinal);
-        SQL += " group by "+ nombreCampo + "\n";
-        SQL += " order by consumo";
+        SQL += "group by "+ nombreCampo + "\n";
+        SQL += "order by "+renombre;
         
         return SQL;
     }
@@ -56,20 +59,20 @@ public class Consultas {
      * @param nombreCampo
      * @return 
      */
-    public String generarSelect (String tipoConsulta, String tablaSubCon, String id_tablaSubCon, String nombreCampo){
+    public String generarSelect (String tipoConsulta, String tablaSubCon, String id_tablaSubCon, String nombreCampo, String campoTabla, String tabla, String renombre){
         String select = "";
         
         select += "select ";
         switch (tipoConsulta) {
             case "CONSOLIDADO":
-                select += "sum(cast(total_consumo as numeric)) as consumo, ";
+                select += "sum(cast(" + campoTabla + " as numeric)) as "+renombre+", ";
                 break;
             case "PROMEDIO":
-                select += "avg(cast(total_consumo as numeric)) as consumo, ";
+                select += "avg(cast(" + campoTabla + " as numeric)) as "+renombre+", ";
                 break;
         }
         
-        select += "(select "+nombreCampo+" from "+tablaSubCon+" where "+tablaSubCon+"."+id_tablaSubCon+" = historico_consumo."+id_tablaSubCon+") as "+tablaSubCon+"\n";
+        select += "(select "+nombreCampo+" from "+tablaSubCon+" where "+tablaSubCon+"."+id_tablaSubCon+" = " + tabla + "."+id_tablaSubCon+") as "+tablaSubCon+"\n";
           
         return select;
     }
@@ -84,7 +87,7 @@ public class Consultas {
     public String generarWhere(String [] tablaSubCon, String [] id_tablaSubCon, String [] valores){
         String where = "";
         
-        where += "where 1 = 1\n";
+        where += "\nwhere 1 = 1\n";
         
         int i;
         for(i=0; i<tablaSubCon.length; i++){
