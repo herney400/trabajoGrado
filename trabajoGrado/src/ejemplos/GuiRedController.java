@@ -21,6 +21,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -45,6 +46,11 @@ public class GuiRedController implements Initializable, ControlledScreen{
    @FXML Button botonMineria;
    @FXML Button botonInteligencia,botonguardarRed,botonmine,botonred ;
    @FXML TableView<Double>  tablaEntrenamiento;
+   
+   @FXML private ComboBox combo_dia_semana,combo_altitud,combo_tipo_comsumidor,
+                          combo_fen_climatico,combo_fran_horaria,combo_estrato,combo_mes;
+   
+  
    
     ScreensController myController;
    
@@ -73,11 +79,17 @@ public class GuiRedController implements Initializable, ControlledScreen{
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");       
         File file =fileChooser.showOpenDialog(stage);
+
+       /*
          
-         if(file!=null){
-            
-             abrirArchivo(file);
-         }
+        */
+        if(file!=null){
+                NeuralNetwork neuralNet;
+                neuralNet = NeuralNetwork.load(file.getPath());
+         }else{
+          
+        
+        }
         
         
         red();

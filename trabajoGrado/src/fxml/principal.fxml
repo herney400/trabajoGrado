@@ -8,11 +8,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" fx:id="anchor" maxWidth="-1.0" prefHeight="665.0" prefWidth="897.0" style="" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ejemplos.PrincipalController">
+<AnchorPane id="AnchorPane" fx:id="anchor" maxWidth="-1.0" prefHeight="664.9998779296875" prefWidth="896.9998779296875" style="" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ejemplos.PrincipalController">
   <children>
-    <Button fx:id="botonMineria" layoutX="131.0" layoutY="200.0" mnemonicParsing="false" onAction="#goToScreen3" prefHeight="158.0" prefWidth="153.0" text="" />
-    <Button id="botonred" fx:id="botonRed" layoutX="428.0" layoutY="200.0" mnemonicParsing="false" onAction="#irared" prefHeight="158.0" prefWidth="132.0" text="" />
-    <Text fx:id="texto" layoutX="360.0" layoutY="57.0" scaleX="9.293802024375566" scaleY="2.516097589949811" strokeType="OUTSIDE" strokeWidth="0.0" text="Energia" />
+    <Button fx:id="botonMineria" layoutX="208.0" layoutY="174.0" mnemonicParsing="false" onAction="#goToScreen3" prefHeight="158.0" prefWidth="153.0" text="" />
+    <Button id="botonred" fx:id="botonRed" layoutX="534.0" layoutY="174.0" mnemonicParsing="false" onAction="#irared" prefHeight="158.0" prefWidth="132.0" text="" />
+    <Text fx:id="texto" layoutX="360.0" layoutY="57.0" scaleX="9.293802024375566" scaleY="2.516097589949811" strokeType="OUTSIDE" strokeWidth="0.0" text="Shaktì" />
   </children>
   <stylesheets>
     <URL value="@../estilos/principal.css" />

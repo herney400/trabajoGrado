@@ -106,13 +106,19 @@ public class FXMLDocumentController   implements Initializable, ControlledScreen
     //Calendarios
     @FXML private DatePicker fechaInicial;
     @FXML private DatePicker fechaFinal;
-    
+     @FXML Button botonInteligencia,botonmineria,botonred,boton_mineria,boton_inteligencia;
+     
+     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         iniciar_varios();
-        menuBar();
+   //     menuBar();
         iniciarCombos();
         iniciarCalendarios();
+         Image imageMine = new Image(getClass().getResourceAsStream("/imagenes/mineri.png"));
+        Image imageRed = new Image(getClass().getResourceAsStream("/imagenes/red3.png")); 
+       boton_mineria.setGraphic(new ImageView(imageMine));
+       boton_inteligencia.setGraphic(new ImageView(imageRed));
     } 
     
     public void iniciarCalendarios(){
@@ -1064,5 +1070,14 @@ public class FXMLDocumentController   implements Initializable, ControlledScreen
     @Override
     public void setScreenParent(ScreensController screenPage) {
         myController=screenPage;
+    }
+    
+    
+     private void irMineria(ActionEvent event){
+       myController.setScreen(Ejemplos.screen1ID);
+    }
+     @FXML
+    private void irInteligencia(ActionEvent event){
+       myController.setScreen(Ejemplos.screen2ID);
     }
 }

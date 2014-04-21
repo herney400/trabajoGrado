@@ -11,7 +11,7 @@
 
 <AnchorPane id="AnchorPane" fx:id="anchorP" minWidth="882.0" prefHeight="665.0" prefWidth="979.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ejemplos.GuiRedController">
   <children>
-    <TabPane layoutX="2.0" layoutY="38.0" prefHeight="627.0" prefWidth="976.0" tabClosingPolicy="UNAVAILABLE">
+    <TabPane layoutX="2.0" layoutY="47.0" prefHeight="618.0" prefWidth="976.0" tabClosingPolicy="UNAVAILABLE">
       <tabs>
         <Tab text="MLP">
           <content>
@@ -242,7 +242,7 @@
         </Tab>
       </tabs>
     </TabPane>
-    <ToolBar layoutX="1.0" layoutY="0.0" prefHeight="38.0" prefWidth="977.0">
+    <ToolBar layoutX="1.0" layoutY="0.0" minHeight="29.0" prefHeight="39.0" prefWidth="977.0">
       <items>
         <Button id="mineria" fx:id="botonmine" mnemonicParsing="false" onAction="#irMineria" text="Mineria" />
         <Button fx:id="botonred" mnemonicParsing="false" onAction="#irInteligencia" text="Inteligencia" />

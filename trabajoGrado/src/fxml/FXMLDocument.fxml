@@ -11,7 +11,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="665.0" prefWidth="897.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ejemplos.FXMLDocumentController">
   <children>
-    <TabPane layoutX="13.0" layoutY="33.0" prefHeight="376.0" prefWidth="869.0" tabClosingPolicy="UNAVAILABLE">
+    <TabPane layoutX="2.0" layoutY="46.0" prefHeight="363.0" prefWidth="869.0" tabClosingPolicy="UNAVAILABLE">
       <tabs>
         <Tab fx:id="tab_h_consumo" text="Historico Consumo">
           <content>
@@ -383,5 +383,11 @@
         </TabPane>
       </items>
     </SplitPane>
+    <ToolBar layoutX="0.0" layoutY="0.0" prefHeight="38.0" prefWidth="977.0">
+      <items>
+        <Button id="mineria" fx:id="boton_mineria" mnemonicParsing="false" onAction="#irMineria" text="Mineria" />
+        <Button id="botonred" fx:id="boton_inteligencia" mnemonicParsing="false" onAction="#irInteligencia" text="Inteligencia" />
+      </items>
+    </ToolBar>
   </children>
 </AnchorPane>
