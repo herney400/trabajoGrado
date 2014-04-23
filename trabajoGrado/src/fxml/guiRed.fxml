@@ -9,27 +9,27 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" fx:id="anchorP" minWidth="882.0" prefHeight="652.0" prefWidth="889.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ejemplos.GuiRedController">
+<AnchorPane id="AnchorPane" fx:id="anchorP" minWidth="882.0" prefHeight="664.0" prefWidth="889.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ejemplos.GuiRedController">
   <children>
-    <TabPane layoutX="2.0" layoutY="47.0" prefHeight="605.0" prefWidth="885.0" tabClosingPolicy="UNAVAILABLE">
+    <TabPane layoutX="1.0" layoutY="36.0" prefHeight="628.0" prefWidth="889.0" tabClosingPolicy="UNAVAILABLE">
       <tabs>
         <Tab text="MLP">
           <content>
-            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="595.0" prefWidth="889.0">
               <children>
-                <SplitPane id="SplitPane" layoutX="-7.0" layoutY="0.0" prefHeight="574.0" prefWidth="984.0">
+                <SplitPane id="SplitPane" layoutX="-7.0" layoutY="0.0" prefHeight="593.0" prefWidth="896.0">
                   <items>
-                    <TabPane prefHeight="574.0" prefWidth="982.0" side="BOTTOM" tabClosingPolicy="UNAVAILABLE">
+                    <TabPane prefHeight="579.0" prefWidth="881.0" side="BOTTOM" tabClosingPolicy="UNAVAILABLE">
                       <tabs>
                         <Tab text="Diaria">
                           <content>
-                            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="541.0" prefWidth="738.0">
+                            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="536.0" prefWidth="879.0">
                               <children>
                                 <Accordion expandedPane="$null" layoutX="14.0" layoutY="14.0" />
                                 <Accordion expandedPane="$null" layoutX="423.0" layoutY="5.0" />
-                                <Accordion layoutX="5.0" layoutY="279.0" prefHeight="251.0" prefWidth="972.0">
+                                <Accordion layoutX="11.0" layoutY="279.0" prefHeight="275.0" prefWidth="878.9999000000025">
                                   <expandedPane>
-                                    <TitledPane fx:id="x1" animated="false" text="Entrenar">
+                                    <TitledPane fx:id="x1" animated="false" prefHeight="214.0" prefWidth="879.0" text="Entrenar">
                                       <content>
                                         <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                           <children>
@@ -74,7 +74,7 @@
                                   </expandedPane>
                                   <panes>
                                     <fx:reference source="x1" />
-                                    <TitledPane animated="false" text="Cargar Red">
+                                    <TitledPane animated="false" prefWidth="874.0" text="Cargar Red">
                                       <content>
                                         <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                           <children>
@@ -203,14 +203,18 @@
                                     </TitledPane>
                                   </panes>
                                 </Accordion>
-                                <ScrollPane id="ScrollPane" layoutX="8.0" layoutY="5.0" prefHeight="272.0" prefViewportHeight="271.0" prefViewportWidth="884.0" prefWidth="970.0">
+                                <ScrollPane id="ScrollPane" layoutX="11.0" layoutY="5.0" prefHeight="273.0" prefViewportHeight="271.0" prefViewportWidth="880.0" prefWidth="879.0">
                                   <content>
-                                    <TableView fx:id="tablaEntrenamiento" prefHeight="271.0" prefWidth="788.0">
-                                      <columns>
-                                        <TableColumn onEditStart="#cargarDatosEntrenamiento" prefWidth="75.0" text="Column X" />
-                                        <TableColumn onEditStart="#cargarDatosEntrenamiento" prefWidth="75.0" text="Column X" />
-                                      </columns>
-                                    </TableView>
+                                    <ScrollPane id="ScrollPane" prefViewportHeight="271.0" prefViewportWidth="868.0" prefWidth="855.0">
+                                      <content>
+                                        <TableView fx:id="tablaEntrenamiento" prefHeight="271.0" prefWidth="875.0">
+                                          <columns>
+                                            <TableColumn onEditStart="#cargarDatosEntrenamiento" prefWidth="75.0" text="Column X" />
+                                            <TableColumn onEditStart="#cargarDatosEntrenamiento" prefWidth="75.0" text="Column X" />
+                                          </columns>
+                                        </TableView>
+                                      </content>
+                                    </ScrollPane>
                                   </content>
                                 </ScrollPane>
                               </children>
@@ -242,7 +246,7 @@
         </Tab>
       </tabs>
     </TabPane>
-    <ToolBar layoutX="0.0" layoutY="0.0" minHeight="29.0" prefHeight="40.0" prefWidth="885.0">
+    <ToolBar layoutX="0.0" layoutY="-4.0" minHeight="29.0" prefHeight="40.0" prefWidth="889.0">
       <items>
         <Button id="mineria" fx:id="botonmine" mnemonicParsing="false" onAction="#irMineria" text="Mineria" />
         <Button fx:id="botonred" mnemonicParsing="false" onAction="#irInteligencia" text="Inteligencia" />

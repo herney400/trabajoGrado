@@ -21,7 +21,7 @@ import javafx.scene.chart.PieChart;
  */
 public class Conexion {
     
-    static String url = "jdbc:postgresql://localhost/trabajodegrado";
+    static String url = "jdbc:postgresql://localhost/postgres";
     static String user = "postgres";
     static String password = "tesis";
     

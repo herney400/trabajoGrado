@@ -145,11 +145,6 @@ public class GuiRedController implements Initializable, ControlledScreen{
          NeuralNetwork neuralNet = new MultiLayerPerceptron(4, 9, 1);
 
     }
-//    @Override
-//    public void setScreenParent(ScreensController screenParent){
-//       
-//    }
-    
     @FXML
     private void irMineria(ActionEvent event){
        myController.setScreen(Ejemplos.screen1ID);
@@ -174,12 +169,12 @@ public class GuiRedController implements Initializable, ControlledScreen{
         firstDataColumn.setMinWidth(130);
         secondDataColumn.setCellValueFactory(new MapValueFactory(Column2MapKey));
         secondDataColumn.setMinWidth(130);
-        tablaEntrenamiento.setItems(generateDataInMap());
-       
         
+        tablaEntrenamiento.setItems(generateDataInMap());       
         tablaEntrenamiento.setEditable(true);
         tablaEntrenamiento.getSelectionModel().setCellSelectionEnabled(true);
         tablaEntrenamiento.getColumns().setAll(firstDataColumn, secondDataColumn);
+      
         Callback<TableColumn<Map, String>, TableCell<Map, String>>
             cellFactoryForMap = new Callback<TableColumn<Map, String>,
                 TableCell<Map, String>>() {
@@ -214,6 +209,20 @@ public class GuiRedController implements Initializable, ControlledScreen{
             dataRow.put(Column2MapKey, value2); 
             allData.add(dataRow);
         }
+        
+        ObservableList<ObservableList<Integer>> matrix = FXCollections.<ObservableList<Integer>>observableArrayList();
+       for (int i = 0; i < 10; i++) {
+            final ObservableList<Integer> row = FXCollections.<Integer>observableArrayList();
+            matrix.add(i, row);
+            for (int j = 0; j < 10; j++) {
+                row.add(0);
+            }
+    } 
+        
+        
+        
+        
+        
         return allData;
     }
     
