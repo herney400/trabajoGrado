@@ -13,22 +13,31 @@ import java.awt.Desktop;
 import java.io.File;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
- 
+ import javafx.util.Callback; 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.MapValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 import org.neuroph.core.NeuralNetwork;
 import org.neuroph.nnet.MultiLayerPerceptron;
 
@@ -44,17 +53,14 @@ public class GuiRedController implements Initializable, ControlledScreen{
    @FXML private DatePicker fechaFinal;
    @FXML private GridPane gridPane;
    @FXML Button botonMineria;
-   @FXML Button botonInteligencia,botonguardarRed,botonmine,botonred ;
-   @FXML TableView<Double>  tablaEntrenamiento;
+   @FXML Button botonInteligencia,botonentrenarRed,botonmine,botonred ;
+   @FXML TableView  tablaEntrenamiento;
    
    @FXML private ComboBox combo_dia_semana,combo_altitud,combo_tipo_comsumidor,
                           combo_fen_climatico,combo_fran_horaria,combo_estrato,combo_mes;
-   
-  
-   
-    ScreensController myController;
-   
-   
+   String Column1MapKey = "A";
+   String Column2MapKey = "B";
+    ScreensController myController;   
    private Desktop desktop=Desktop.getDesktop();
     /**
      * Initializes the controller class.
@@ -62,15 +68,27 @@ public class GuiRedController implements Initializable, ControlledScreen{
     @Override
     public void initialize(URL url, ResourceBundle rb) {
        assert  boton_cargar_red != null : "fx:id=\"toolbar\" was not injected: check your FXML file 'guiRed.fxml'.";
+       assert botonentrenarRed!= null : "fx:id=\"botonentrenarRed\" was not injected: check your FXML file 'guiRed.fxml'.";
+       assert tablaEntrenamiento!= null : "fx:id=\"tablaEntrenamiento\" was not injected: check your FXML file 'guiRed.fxml'.";
        iniciarCalendarios();
-       
+       iniciarControles();
        Image imageDecline = new Image(getClass().getResourceAsStream("/imagenes/guardar.png"));
        Image imageMine = new Image(getClass().getResourceAsStream("/imagenes/mineri.png"));
-        Image imageRed = new Image(getClass().getResourceAsStream("/imagenes/red3.png")); 
-       botonguardarRed.setGraphic(new ImageView(imageDecline));
+       Image imageRed = new Image(getClass().getResourceAsStream("/imagenes/red3.png")); 
+       botonentrenarRed.setGraphic(new ImageView(imageDecline));
        botonmine.setGraphic(new ImageView(imageMine));
        botonred.setGraphic(new ImageView(imageRed));
        
+    }
+    
+    @FXML public void iniciarControles(){
+      TextField tex_error, tex_max_iteraciones,tex_tasa_aprendizaje,text_num_capas,tex_num_neu_entrada,tex_num_neu_oculta;
+      
+    }
+    @FXML public void  enntrenarRed(ActionEvent event){
+     
+       
+        
     }
     
     @FXML public void cargarRed(ActionEvent E){
@@ -80,15 +98,12 @@ public class GuiRedController implements Initializable, ControlledScreen{
         fileChooser.setTitle("Open Resource File");       
         File file =fileChooser.showOpenDialog(stage);
 
-       /*
-         
-        */
         if(file!=null){
-                NeuralNetwork neuralNet;
-                neuralNet = NeuralNetwork.load(file.getPath());
+           NeuralNetwork neuralNet;
+           neuralNet = NeuralNetwork.load(file.getPath());
          }else{
-          
-        
+           // Dialogs.showInformationDialog(stage, "No seleccionaste ningun archivo",  "Información", "Dialogo");
+            new AlertDialog(stage, "No eligio archivo!", AlertDialog.ICON_ERROR).showAndWait();
         }
         
         
@@ -148,7 +163,58 @@ public class GuiRedController implements Initializable, ControlledScreen{
     public void setScreenParent(ScreensController screenPage) {
          myController = screenPage;
     }
+    @FXML
     public void cargarDatosEntrenamiento(ActionEvent event){
+        
+
+        TableColumn<Map, String> firstDataColumn = new TableColumn<>("Class A");
+        TableColumn<Map, String> secondDataColumn = new TableColumn<>("Class B");
+ 
+        firstDataColumn.setCellValueFactory(new MapValueFactory(Column1MapKey));
+        firstDataColumn.setMinWidth(130);
+        secondDataColumn.setCellValueFactory(new MapValueFactory(Column2MapKey));
+        secondDataColumn.setMinWidth(130);
+        tablaEntrenamiento.setItems(generateDataInMap());
+       
+        
+        tablaEntrenamiento.setEditable(true);
+        tablaEntrenamiento.getSelectionModel().setCellSelectionEnabled(true);
+        tablaEntrenamiento.getColumns().setAll(firstDataColumn, secondDataColumn);
+        Callback<TableColumn<Map, String>, TableCell<Map, String>>
+            cellFactoryForMap = new Callback<TableColumn<Map, String>,
+                TableCell<Map, String>>() {
+                    @Override
+                    public TableCell call(TableColumn p) {
+                        return new TextFieldTableCell(new StringConverter() {
+                            @Override
+                            public String toString(Object t) {
+                                return t.toString();
+                            }
+                            @Override
+                            public Object fromString(String string) {
+                                return string;
+                            }                                    
+                        });
+                    }
+        };
+        firstDataColumn.setCellFactory(cellFactoryForMap);
+        secondDataColumn.setCellFactory(cellFactoryForMap);
+        System.out.println("---------------------*");
+    }
+    
+    
+     private ObservableList<Map> generateDataInMap() {
+        int max = 10;
+        ObservableList<Map> allData = FXCollections.observableArrayList();
+        for (int i = 1; i < max; i++) {
+            Map<String, String> dataRow = new HashMap<>(); 
+            String value1 = "A" + i;
+            String value2 = "B" + i; 
+            dataRow.put(Column1MapKey, value1);
+            dataRow.put(Column2MapKey, value2); 
+            allData.add(dataRow);
+        }
+        return allData;
     }
     
 }

@@ -1,0 +1,19 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 22-abr-2014, 11:30:32
+    Author     : N550J
+*/
+.root {
+    -fx-background-color: #c0c0c0;
+    -fx-background-radius: 5;
+    -fx-padding: 10;
+}
+.borderPanebox{
+     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.5, 0.0, 0.0);
+    -fx-background-radius: 5;
+    -fx-padding: 15;
+}

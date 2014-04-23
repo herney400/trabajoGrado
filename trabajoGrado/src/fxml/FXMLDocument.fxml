@@ -9,16 +9,16 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="665.0" prefWidth="897.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ejemplos.FXMLDocumentController">
+<AnchorPane id="AnchorPane" prefHeight="651.999977929685" prefWidth="889.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ejemplos.FXMLDocumentController">
   <children>
-    <TabPane layoutX="2.0" layoutY="46.0" prefHeight="363.0" prefWidth="869.0" tabClosingPolicy="UNAVAILABLE">
+    <TabPane layoutX="5.0" layoutY="46.0" prefHeight="363.0" prefWidth="882.0" tabClosingPolicy="UNAVAILABLE">
       <tabs>
         <Tab fx:id="tab_h_consumo" text="Historico Consumo">
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="567.0" prefWidth="876.0">
-              <ScrollPane id="ScrollPane" layoutX="15.0" layoutY="14.0" prefHeight="327.0" prefViewportHeight="360.0" prefViewportWidth="864.0" prefWidth="854.0">
+              <ScrollPane id="ScrollPane" layoutX="0.0" layoutY="14.0" prefHeight="326.9999000000025" prefViewportHeight="360.0" prefViewportWidth="864.0" prefWidth="884.0">
                 <content>
-                  <PieChart id="PieChart" fx:id="mibarchar" animated="true" legendSide="RIGHT" onMouseEntered="#evento" prefHeight="329.0" prefWidth="853.9998779296875" title="Consumo" />
+                  <PieChart id="PieChart" fx:id="mibarchar" animated="true" legendSide="RIGHT" onMouseEntered="#evento" prefHeight="329.0" prefWidth="869.0" title="Consumo" />
                 </content>
               </ScrollPane>
             </AnchorPane>
@@ -53,7 +53,7 @@
       </tabs>
     </TabPane>
     <MenuBar fx:id="menubar" layoutX="0.0" layoutY="2.0" prefWidth="897.0" />
-    <ToolBar fx:id="toolbar" layoutX="14.0" layoutY="621.0" maxWidth="-1.0" prefWidth="871.0">
+    <ToolBar fx:id="toolbar" layoutX="1.0" layoutY="621.0" maxWidth="-1.0" prefWidth="884.0000999999975">
       <items>
         <Button fx:id="botonge" mnemonicParsing="false" onAction="#generarReporte" prefWidth="82.0" text="Generar" translateX="435.0" />
       </items>
@@ -61,9 +61,9 @@
         <URL value="@../estilos/estilos.css" />
       </stylesheets>
     </ToolBar>
-    <SplitPane id="SplitPane" layoutX="14.0" layoutY="424.0" prefHeight="197.0">
+    <SplitPane id="SplitPane" layoutX="2.0" layoutY="420.0" prefHeight="197.0" prefWidth="884.0">
       <items>
-        <TabPane prefHeight="251.0" prefWidth="869.0" tabClosingPolicy="UNAVAILABLE">
+        <TabPane prefHeight="195.0" prefWidth="884.0" tabClosingPolicy="UNAVAILABLE">
           <tabs>
             <Tab fx:id="tab_filtros_generales" text="Filtros Generales">
               <content>
@@ -383,7 +383,7 @@
         </TabPane>
       </items>
     </SplitPane>
-    <ToolBar layoutX="0.0" layoutY="0.0" prefHeight="38.0" prefWidth="977.0">
+    <ToolBar layoutX="0.0" layoutY="0.0" prefHeight="38.0" prefWidth="885.0">
       <items>
         <Button id="mineria" fx:id="boton_mineria" mnemonicParsing="false" onAction="#irMineria" text="Mineria" />
         <Button id="botonred" fx:id="boton_inteligencia" mnemonicParsing="false" onAction="#irInteligencia" text="Inteligencia" />

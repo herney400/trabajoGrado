@@ -61,6 +61,7 @@ public class Ejemplos extends Application {
         
         Group root = new Group();
         root.getChildren().addAll(mainContainer);
+        stage.sizeToScene();
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
