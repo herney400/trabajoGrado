@@ -10,31 +10,26 @@ import eu.schudt.javafx.controls.calendar.DatePicker;
 import fxml.ControlledScreen;
 import fxml.ScreensController;
 import java.awt.Desktop;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
-import javafx.application.Platform;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
  import javafx.util.Callback; 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -49,8 +44,13 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import javafx.util.StringConverter;
+import lectura.CSVReader;
+import lectura.Validar;
 import org.neuroph.core.NeuralNetwork;
+import org.neuroph.core.data.DataSet;
+import org.neuroph.core.learning.LearningRule;
 import org.neuroph.nnet.MultiLayerPerceptron;
+import org.neuroph.nnet.comp.neuron.BiasNeuron;
 
 
 /**
@@ -59,17 +59,25 @@ import org.neuroph.nnet.MultiLayerPerceptron;
  * @author N550J
  */
 public class GuiRedController implements Initializable, ControlledScreen{
+     Validar vali=new Validar();
    @FXML private AnchorPane anchorP;
    @FXML private Button boton_cargar_red;
    @FXML private DatePicker fechaInicial;
    @FXML private DatePicker fechaFinal;
    @FXML private GridPane gridPane;
    @FXML Button botonMineria;
-   @FXML Button botonInteligencia,botonentrenarRed,botonmine,botonred ;
+   @FXML Button botonInteligencia,botonentrenarRed,botonmine,botonred,boton_cargar_conjunto ;
    @FXML TableView  tablaEntrenamiento;
-   
+   @FXML TextField tex_error, tex_max_iteraciones,tex_tasa_aprendizaje,text_num_capas,tex_num_neu_entrada,tex_num_neu_oculta;
+   @FXML       int t_max_iteraciones,t_num_capas,t_num_neu_entrada,t_num_neu_ocul;
+   @FXML    double t_error,t_tasa_aprendizaje;
+    
    @FXML private ComboBox combo_dia_semana,combo_altitud,combo_tipo_comsumidor,
-                          combo_fen_climatico,combo_fran_horaria,combo_estrato,combo_mes;
+                          combo_fen_climatico,combo_fran_horaria,combo_estrato,
+                          combo_mes,funcion_transferencia,regla_aprendizaje;
+   
+   @FXML CheckBox biasCheck;
+   
    String Column1MapKey = "A";
    String Column2MapKey = "B";
    String Column3MapKey = "C";
@@ -85,18 +93,28 @@ public class GuiRedController implements Initializable, ControlledScreen{
        assert tablaEntrenamiento!= null : "fx:id=\"tablaEntrenamiento\" was not injected: check your FXML file 'guiRed.fxml'.";
        iniciarCalendarios();
        iniciarControles();
-       Image imageDecline = new Image(getClass().getResourceAsStream("/imagenes/guardar.png"));
+//       Image imageload = new Image(getClass().getResourceAsStream("/imagenes/load.png"));
        Image imageMine = new Image(getClass().getResourceAsStream("/imagenes/mineri.png"));
        Image imageRed = new Image(getClass().getResourceAsStream("/imagenes/red3.png")); 
-       botonentrenarRed.setGraphic(new ImageView(imageDecline));
+      // botonentrenarRed.setGraphic(new ImageView(imageDecline));
        botonmine.setGraphic(new ImageView(imageMine));
        botonred.setGraphic(new ImageView(imageRed));
-       
+//       boton_cargar_conjunto.setGraphic(new ImageView(  imageload));
+    
+    
     }
     
     @FXML public void iniciarControles(){
-      TextField tex_error, tex_max_iteraciones,tex_tasa_aprendizaje,text_num_capas,tex_num_neu_entrada,tex_num_neu_oculta;
-      
+          assert funcion_transferencia != null : "fx:id=\"funcion_transferencia\" was not injected: check your FXML file 'guiRed.fxml'.";
+          ObservableList<String> optionscombo_funcion_transferencia = FXCollections.observableArrayList("Tangencial", "Sigmoidal");
+          funcion_transferencia.setItems(optionscombo_funcion_transferencia);
+          funcion_transferencia.getSelectionModel().selectLast();
+                  
+          assert regla_aprendizaje != null : "fx:id=\"funcion_transferencia\" was not injected: check your FXML file 'guiRed.fxml'.";
+          ObservableList<String> optionscombo_regla_aprendizaje= FXCollections.observableArrayList("BackPropagatión", "BackPropagatión con Momentum", "Resilient BackPropagatión", "Dynamic BackPropagatión");
+          regla_aprendizaje.setItems(optionscombo_regla_aprendizaje);
+          regla_aprendizaje.getSelectionModel().selectLast(); 
+          
     }
     @FXML public void  enntrenarRed(ActionEvent event){
      
@@ -120,7 +138,7 @@ public class GuiRedController implements Initializable, ControlledScreen{
         }
         
         
-        red();
+//        red();
     }
     
     @FXML public void abrirArchivo(File file){
@@ -153,11 +171,7 @@ public class GuiRedController implements Initializable, ControlledScreen{
         gridPane.add(fechaFinal, 1, 2);
     }
     
-    @FXML public void red(){
-    
-         NeuralNetwork neuralNet = new MultiLayerPerceptron(4, 9, 1);
-
-    }
+   
     @FXML
     private void irMineria(ActionEvent event){
        myController.setScreen(Ejemplos.screen1ID);
@@ -217,23 +231,49 @@ public class GuiRedController implements Initializable, ControlledScreen{
         fileChooser.setTitle("Open Resource File");       
         File file =fileChooser.showOpenDialog(stage);
        
-       
-//            if (file.exists() && file.canRead()) {
-//                DataSourceReader dsr1 = new FileSource(file);  
-//                String[] cols ={"FNAME","LNAME","ADDRESS"};
-//                MyCSVDataSource ds1 = new MyCSVDataSource(dsr1, cols);
-//                TableView tableView = new TableView();
-//                tableView.setItems(ds1.getData());
-//
-//                System.out.println("CSV : " + ds1.getData().size());
-//        
-//        
-//            }
-        populateTable( file.getPath(), true);
+        //opulateTable( file.getPath(), true);
         
     }
     
     
+    public void tomarDatosEntrenamiento(ActionEvent event){
+       
+         if(vali.validaDouble(tex_error)){
+            t_error=Double.parseDouble(tex_error.getText().toString());
+         }if(vali.validaDouble(tex_max_iteraciones)){
+            t_max_iteraciones=Integer.parseInt(tex_max_iteraciones.getText().toString());
+         } if(vali.validaDouble(tex_tasa_aprendizaje)){
+            t_tasa_aprendizaje=Double.parseDouble(tex_tasa_aprendizaje.getText().toString());
+         }if(vali.validarEntero(text_num_capas)){
+            t_num_capas=Integer.parseInt(text_num_capas.getText().toString());
+         }if(vali.validarEntero(tex_num_neu_entrada)){
+            t_num_neu_entrada=Integer.parseInt(tex_num_neu_entrada.getText().toString()); 
+         }if(vali.validarEntero(tex_num_neu_oculta)){
+            t_num_neu_ocul=Integer.parseInt(tex_num_neu_oculta.getText().toString());  
+         }
+          
+    }
+     @FXML public void crearRed(double error,int maxIteraciones, double tazaAprendi, int numCapas, int neur_entrada,int neu_oculta){
+        
+         String funcion_trans=   funcion_transferencia.getValue().toString();
+         String regla_aprendiz = regla_aprendizaje.getValue().toString();
+         
+         NeuralNetwork neuralNet = new MultiLayerPerceptron(5,6,7);
+         
+         if(biasCheck.isSelected()){
+             BiasNeuron bias=new BiasNeuron();
+             if(funcion_trans.equals("Tangencial")){
+                 
+             }else if(funcion_trans.equals("Sigmoidal")){
+             
+             }
+             
+         }else{
+         
+         }
+        
+    }
+
      private ObservableList<Map> generateDataInMap() {
         int max = 20;
         ObservableList<Map> allData = FXCollections.observableArrayList();
@@ -255,117 +295,36 @@ public class GuiRedController implements Initializable, ControlledScreen{
      
      
      
-     private void populateTable( /*final TableView<ObservableList<StringProperty>> table,*/final String urlSpec, final boolean hasHeader) {
-    tablaEntrenamiento.getItems().clear();
-    tablaEntrenamiento.getColumns().clear();
-//    tablaEntrenamiento.setPlaceholder(new Label("Loading..."));
-         
-    Task<Void> task = new Task<Void>() {
-        
-      @Override
-      protected Void call() throws Exception {
-        BufferedReader in = getReaderFromUrl(urlSpec);
-        // Header line
-        if (hasHeader) {
-          final String headerLine = in.readLine();
-          final String[] headerValues = headerLine.split(" ");
-          Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-              for (int column = 0; column < headerValues.length; column++) {
-                tablaEntrenamiento.getColumns().add(
-                    createColumn(column, headerValues[column]));
-              }
-            }
-          });
-        }
-
-        // Data:
- System.out.println("**********");
-        String dataLine;
-        while ((dataLine = in.readLine()) != null) {
-          final String[] dataValues = dataLine.split(" ");
-          Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-              // Add additional columns if necessary:
-               
-              for (int columnIndex = tablaEntrenamiento.getColumns().size(); columnIndex < dataValues.length; columnIndex++) {
-                tablaEntrenamiento.getColumns().add(createColumn(columnIndex, ""));
-              }
-              // Add data to table:
-              ObservableList<StringProperty> data = FXCollections
-                  .observableArrayList();
-              for (String value : dataValues) {
-                data.add(new SimpleStringProperty(value));
-              }
-              tablaEntrenamiento.getItems().add(data);
-            }
-          });
-        }
-        return null;
-      }
-    };
-   
-    Thread thread = new Thread(task);
-    thread.setDaemon(true);
-    thread.start();
-  }
-
-  private TableColumn<ObservableList<StringProperty>, String> createColumn(final int columnIndex, String columnTitle) {
-      
-    TableColumn<ObservableList<StringProperty>, String> column = new TableColumn<>();
-    String title;
-    if (columnTitle == null || columnTitle.trim().length() == 0) {
-      title = "Column " + (columnIndex + 1);
-    } else {
-      title = columnTitle;
-    }
-    column.setText(title);
-    column
-        .setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ObservableList<StringProperty>, String>, ObservableValue<String>>() {
-          @Override
-          public ObservableValue<String> call(
-              TableColumn.CellDataFeatures<ObservableList<StringProperty>, String> cellDataFeatures) {
-            ObservableList<StringProperty> values = cellDataFeatures.getValue();
-            if (columnIndex >= values.size()) {
-              return new SimpleStringProperty("");
-            } else {
-              return cellDataFeatures.getValue().get(columnIndex);
-            }
-          }
-        });
-    return column;
-  }
-
-  private BufferedReader getReaderFromUrl(String urlSpec) throws Exception {
-    URL url = new URL(urlSpec);
-    URLConnection connection = url.openConnection();
-    InputStream in = connection.getInputStream();
-    return new BufferedReader(new InputStreamReader(in));
-  }
-
   
-  public void llenarTablaEntrena(ActionEvent event){
+  public void llenarTablaEntrena(ActionEvent event) throws FileNotFoundException, IOException{
        Stage stage =new Stage();    
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");       
         File file =fileChooser.showOpenDialog(stage);
      
-       // FileSource fs = new FileSource("test.csv");  
-       // Now creating my datasource 
-        
+       String[] fila=null;
+       String csvArchivo=file.getPath();
+       CSVReader csvLector=new CSVReader(new FileReader(csvArchivo));       
+       List contenido =csvLector.readAll();
+       ObservableList<String> list = FXCollections.<String>observableList(contenido);
+      
        
-       // FileSource fs = new FileSource("test.csv");  
-       // Now creating my datasource 
-//       CSVDataSource dataSource = new CSVDataSource(  
-//                 file.getPath(), "order-id", "order-item-id");  
-//       @SuppressWarnings("rawtypes")  
-//       //TableView table1 = new TableView();  
-//       TableColumn<?, ?> orderCol = dataSource.getNamedColumn("order-id");  
-//       TableColumn<?, ?> itemCol = dataSource.getNamedColumn("order-item-id");    
-//       tablaEntrenamiento.getColumns().addAll(orderCol, itemCol);  
-//       tablaEntrenamiento.setItems(dataSource);
+       csvLector.close();
+       TableColumn<String,String> firstDataColumn= new TableColumn<String,String>("uno");
+       
+//       String[] siguLinea;
+//       String[] sinComas;
+//       while((siguLinea=csvLector.readNext())!=null){            
+//           System.out.println("clima:["+siguLinea[0]);
+//       }
+       
+       
+       tablaEntrenamiento.setItems(list);
+       
+       tablaEntrenamiento.getColumns().addAll(firstDataColumn);      
+       
+       
+       
   }
   
   
