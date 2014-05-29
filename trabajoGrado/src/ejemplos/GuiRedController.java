@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
  import javafx.util.Callback; 
@@ -51,6 +53,12 @@ import org.neuroph.core.data.DataSet;
 import org.neuroph.core.learning.LearningRule;
 import org.neuroph.nnet.MultiLayerPerceptron;
 import org.neuroph.nnet.comp.neuron.BiasNeuron;
+import org.neuroph.nnet.learning.BackPropagation;
+import org.neuroph.nnet.learning.DynamicBackPropagation;
+import org.neuroph.nnet.learning.MomentumBackpropagation;
+import org.neuroph.nnet.learning.ResilientPropagation;
+import org.neuroph.util.TrainingSetImport;
+import org.neuroph.util.TransferFunctionType;
 
 
 /**
@@ -75,7 +83,7 @@ public class GuiRedController implements Initializable, ControlledScreen{
    @FXML private ComboBox combo_dia_semana,combo_altitud,combo_tipo_comsumidor,
                           combo_fen_climatico,combo_fran_horaria,combo_estrato,
                           combo_mes,funcion_transferencia,regla_aprendizaje;
-   
+    File file;
    @FXML CheckBox biasCheck;
    
    String Column1MapKey = "A";
@@ -106,7 +114,7 @@ public class GuiRedController implements Initializable, ControlledScreen{
     
     @FXML public void iniciarControles(){
           assert funcion_transferencia != null : "fx:id=\"funcion_transferencia\" was not injected: check your FXML file 'guiRed.fxml'.";
-          ObservableList<String> optionscombo_funcion_transferencia = FXCollections.observableArrayList("Tangencial", "Sigmoidal");
+          ObservableList<String> optionscombo_funcion_transferencia = FXCollections.observableArrayList("Tangencial", "Sigmoidal","Lineal");
           funcion_transferencia.setItems(optionscombo_funcion_transferencia);
           funcion_transferencia.getSelectionModel().selectLast();
                   
@@ -229,8 +237,8 @@ public class GuiRedController implements Initializable, ControlledScreen{
      Stage stage =new Stage();    
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");       
-        File file =fileChooser.showOpenDialog(stage);
-       
+          file =fileChooser.showOpenDialog(stage);
+          
         //opulateTable( file.getPath(), true);
         
     }
@@ -253,23 +261,47 @@ public class GuiRedController implements Initializable, ControlledScreen{
          }
           
     }
-     @FXML public void crearRed(double error,int maxIteraciones, double tazaAprendi, int numCapas, int neur_entrada,int neu_oculta){
+     @FXML public void crearRed(double error,int maxIteraciones, double tazaAprendi, int numCapas, int neur_entrada,int neu_oculta,int neu_salida){
         
          String funcion_trans=   funcion_transferencia.getValue().toString();
          String regla_aprendiz = regla_aprendizaje.getValue().toString();
-         
          NeuralNetwork neuralNet = new MultiLayerPerceptron(5,6,7);
+         String archivoEnte =file.getPath();
+         
+         DataSet conjEntre=null;
+         try {
+             conjEntre=TrainingSetImport.importFromFile(archivoEnte, neur_entrada, neu_salida, ",");
+         } catch (IOException ex) {
+            System.out.println("Archivo no encontrado");
+         } catch (NumberFormatException ex) {
+            System.out.println("Error leyendo archivo o el formato esta dañado!");
+         }
+         
          
          if(biasCheck.isSelected()){
              BiasNeuron bias=new BiasNeuron();
              if(funcion_trans.equals("Tangencial")){
-                 
+                 MultiLayerPerceptron redNeu=new MultiLayerPerceptron(TransferFunctionType.TANH, neur_entrada,neu_oculta,neu_salida);
+                    if(regla_aprendiz.equals("BackPropagatión")){
+                        MomentumBackpropagation reglaAprendisaje=(MomentumBackpropagation)redNeu.getLearningRule();
+                    }if(regla_aprendiz.equals("BackPropagatión con Momentum")){
+
+                    }if(regla_aprendiz.equals("Resilient BackPropagatión")){
+                        ResilientPropagation reglaApredizaje=(ResilientPropagation)redNeu.getLearningRule();
+                    }if(regla_aprendiz.equals("Dynamic BackPropagatión")){
+                       DynamicBackPropagation reglaAprendizaje=(DynamicBackPropagation)redNeu.getLearningRule();
+                    }
+                  
              }else if(funcion_trans.equals("Sigmoidal")){
+                MultiLayerPerceptron redNeu=new MultiLayerPerceptron(TransferFunctionType.SIGMOID, neur_entrada,neu_oculta,neu_salida);
+             }else if(funcion_trans.equals("Lineal")){
+                MultiLayerPerceptron redNeu=new MultiLayerPerceptron(TransferFunctionType.LINEAR, neur_entrada,neu_oculta,neu_salida);
              
-             }
+             } 
              
          }else{
          
+             
          }
         
     }

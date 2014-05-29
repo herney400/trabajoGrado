@@ -42,7 +42,7 @@
                                                 <Label text="Tasa de Aprendizaje" GridPane.columnIndex="0" GridPane.rowIndex="3" />
                                                 <TextField fx:id="tex_tasa_aprendizaje" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                                 <Label prefWidth="188.0" text="Conjunto de Entrenamiento" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                                                <Button id="botonguardarRed" fx:id="boton_cargar_conjunto" mnemonicParsing="false" onAction="#llenarTablaEntrena" text="Cargar conjunto" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                                                <Button id="botonguardarRed" fx:id="boton_cargar_conjunto" mnemonicParsing="false" onAction="#abrirArchivoEntrenamiento" text="Cargar conjunto" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                                                 <ComboBox fx:id="regla_aprendizaje" prefHeight="21.0" prefWidth="189.0" GridPane.columnIndex="7" GridPane.rowIndex="3">
                                                   <items>
                                                     <FXCollections fx:factory="observableArrayList">
