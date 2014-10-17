@@ -9,9 +9,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" fx:id="anchorP" minWidth="882.0" prefHeight="664.0" prefWidth="889.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ejemplos.GuiRedController">
+<AnchorPane id="AnchorPane" fx:id="anchorP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="664.0" prefWidth="889.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="ejemplos.GuiRedController">
   <children>
-    <TabPane layoutX="1.0" layoutY="36.0" prefHeight="628.0" prefWidth="889.0" tabClosingPolicy="UNAVAILABLE">
+    <TabPane layoutX="1.0" layoutY="44.0" prefHeight="620.0" prefWidth="889.0" tabClosingPolicy="UNAVAILABLE">
       <tabs>
         <Tab text="MLP">
           <content>
@@ -43,7 +43,7 @@
                                                 <TextField fx:id="tex_tasa_aprendizaje" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                                 <Label prefWidth="188.0" text="Conjunto de Entrenamiento" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                                                 <Button id="botonguardarRed" fx:id="boton_cargar_conjunto" mnemonicParsing="false" onAction="#abrirArchivoEntrenamiento" text="Cargar conjunto" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                                                <ComboBox fx:id="regla_aprendizaje" prefHeight="21.0" prefWidth="189.0" GridPane.columnIndex="7" GridPane.rowIndex="3">
+                                                <ComboBox fx:id="regla_aprendizaje" onAction="#ventanaEmergente" onContextMenuRequested="#ventanaEmergente" prefHeight="21.0" prefWidth="189.0" GridPane.columnIndex="7" GridPane.rowIndex="3">
                                                   <items>
                                                     <FXCollections fx:factory="observableArrayList">
                                                       <String fx:value="Item 1" />
@@ -53,7 +53,7 @@
                                                   </items>
                                                 </ComboBox>
                                                 <Label text="Regla de aprendizaje" GridPane.columnIndex="6" GridPane.rowIndex="3" />
-                                                <CheckBox fx:id="bias" mnemonicParsing="false" text="" GridPane.columnIndex="7" GridPane.rowIndex="2" />
+                                                <CheckBox id="bias" fx:id="biasCheck" mnemonicParsing="false" text="" GridPane.columnIndex="7" GridPane.rowIndex="2" />
                                                 <Label prefWidth="127.5" text="Usar neurona bias" GridPane.columnIndex="6" GridPane.rowIndex="2" />
                                                 <TextField fx:id="tex_num_neu_entrada" prefWidth="200.0" GridPane.columnIndex="7" GridPane.rowIndex="1" />
                                                 <Label text="Neuronas Capa Entrada" GridPane.columnIndex="6" GridPane.rowIndex="1" />
@@ -70,15 +70,19 @@
                                                 <Label text="Función de transferencia" GridPane.columnIndex="3" GridPane.rowIndex="2" />
                                                 <TextField fx:id="text_num_capas" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
                                                 <Label text="Numero capas" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                                <Label text="Neuronas salida" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                                                <TextField id="text_num_capas" fx:id="t_numero_neuro_salida" prefWidth="129.0" GridPane.columnIndex="4" GridPane.rowIndex="0" />
+                                                <Label text="Conectar entrada con salida" GridPane.columnIndex="6" GridPane.rowIndex="0" />
+                                                <CheckBox fx:id="checkConectarentradasalida" mnemonicParsing="false" text="" GridPane.columnIndex="7" GridPane.rowIndex="0" />
                                               </children>
                                               <columnConstraints>
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="220.0" minWidth="10.0" prefWidth="160.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="238.0" minWidth="10.0" prefWidth="125.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="238.0" minWidth="0.0" prefWidth="24.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="238.0" minWidth="10.0" prefWidth="141.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="238.0" minWidth="10.0" prefWidth="133.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="238.0" minWidth="9.0" prefWidth="23.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="238.0" minWidth="10.0" prefWidth="128.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="220.0" minWidth="10.0" prefWidth="148.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="238.0" minWidth="10.0" prefWidth="117.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="238.0" minWidth="0.0" prefWidth="13.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="238.0" minWidth="10.0" prefWidth="136.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="238.0" minWidth="10.0" prefWidth="145.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="238.0" minWidth="9.0" prefWidth="19.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="238.0" minWidth="10.0" prefWidth="156.0" />
                                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="238.0" minWidth="10.0" prefWidth="121.0" />
                                               </columnConstraints>
                                               <rowConstraints>
@@ -88,7 +92,8 @@
                                                 <RowConstraints maxHeight="21.0" minHeight="10.0" prefHeight="15.0" vgrow="SOMETIMES" />
                                               </rowConstraints>
                                             </GridPane>
-                                            <Button id="botonguardarRed" fx:id="botonentrenarRed" layoutX="360.0" layoutY="166.0" mnemonicParsing="false" onAction="#tomarDatosEntrenamiento" prefWidth="129.0" text="Entrenar" />
+                                            <Button id="botonguardarRed" fx:id="botonentrenarRed" layoutX="245.0" layoutY="166.0" mnemonicParsing="false" onAction="#tomarDatosEntrenamiento" prefWidth="103.0" text="Enviar datos" />
+                                            <Button fx:id="botonValidarRed" layoutX="362.0" layoutY="166.0" mnemonicParsing="false" onAction="#irTesteoRNA" prefWidth="101.5" text="Validar red" />
                                           </children>
                                         </AnchorPane>
                                       </content>
@@ -225,7 +230,11 @@
                                     </TitledPane>
                                   </panes>
                                 </Accordion>
-                                <ScrollPane id="ScrollPane" content="$null" layoutX="11.0" layoutY="5.0" prefHeight="273.0" prefViewportHeight="271.0" prefViewportWidth="880.0" prefWidth="879.0" />
+                                <ScrollPane id="ScrollPane" layoutX="11.0" layoutY="6.0" prefHeight="273.0" prefViewportHeight="271.0" prefViewportWidth="880.0" prefWidth="879.0">
+                                  <content>
+                                    <TextArea fx:id="texareaDatos" prefHeight="268.0" prefWidth="880.0" wrapText="true" />
+                                  </content>
+                                </ScrollPane>
                               </children>
                             </AnchorPane>
                           </content>

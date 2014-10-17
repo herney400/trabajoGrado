@@ -1070,7 +1070,7 @@ public class FXMLDocumentController   implements Initializable, ControlledScreen
         myController=screenPage;
     }
     
-    
+    @FXML
      private void irMineria(ActionEvent event){
        myController.setScreen(Ejemplos.screen1ID);
     }

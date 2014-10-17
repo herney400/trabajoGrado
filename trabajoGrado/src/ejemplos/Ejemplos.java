@@ -28,17 +28,22 @@ public class Ejemplos extends Application {
     public static String screen2File = "guiRed.fxml";
     public static String screen3ID = "principal";
     public static String screen3File = "principal.fxml";
+    public static String screen4ID = "testeo";
+    public static String screen4File = "testeo.fxml";
+    
+    
+    
     @Override
     public void start(Stage stage) throws Exception {
         ejecutarGui();
       //Parent root = FXMLLoader.load(getClass().getResource("/fxml/FXMLDocument.fxml"));
         
         
-         ScreensController mainContainer = new ScreensController();
+        ScreensController mainContainer = new ScreensController();
         mainContainer.loadScreen(Ejemplos.screen1ID, Ejemplos.screen1File);
         mainContainer.loadScreen(Ejemplos.screen2ID, Ejemplos.screen2File);
         mainContainer.loadScreen(Ejemplos.screen3ID, Ejemplos.screen3File);
-        
+        mainContainer.loadScreen(Ejemplos.screen4ID, Ejemplos.screen4File);
         mainContainer.setScreen(Ejemplos.screen3ID);
        
 //        

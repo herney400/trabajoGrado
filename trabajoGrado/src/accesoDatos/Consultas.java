@@ -32,7 +32,9 @@ public class Consultas {
      * @param renombre
      * @return 
      */
-    public String generarSQL(String tipoConsulta, String tablaSubCon, String id_tablaSubCon, String nombreCampo, String [] tablaSubConWhere, String [] id_tablaSubConWhere, String [] valoresWhere, String fechaInicial, String fechaFinal, ArrayList whereAux, String tabla, String campoTabla, String renombre){
+    public String generarSQL(String tipoConsulta, String tablaSubCon, String id_tablaSubCon, String nombreCampo,
+            String [] tablaSubConWhere, String [] id_tablaSubConWhere, String [] valoresWhere, String fechaInicial,
+            String fechaFinal, ArrayList whereAux, String tabla, String campoTabla, String renombre){
         String SQL = "";
 
         SQL += generarSelect(tipoConsulta, tablaSubCon, id_tablaSubCon, nombreCampo, campoTabla, tabla, renombre);
@@ -59,7 +61,8 @@ public class Consultas {
      * @param nombreCampo
      * @return 
      */
-    public String generarSelect (String tipoConsulta, String tablaSubCon, String id_tablaSubCon, String nombreCampo, String campoTabla, String tabla, String renombre){
+    public String generarSelect (String tipoConsulta, String tablaSubCon, String id_tablaSubCon, 
+            String nombreCampo, String campoTabla, String tabla, String renombre){
         String select = "";
         
         select += "select ";

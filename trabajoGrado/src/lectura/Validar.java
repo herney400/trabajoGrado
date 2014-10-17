@@ -29,8 +29,7 @@ public class Validar {
         return salid;
     }
      public boolean validaDouble( TextField txf){           
-      boolean salida=false;
-         
+      boolean salida=false; 
          if((txf.getText().matches("[0-9-.-]*"))){
               salida=true;                        
           }else{

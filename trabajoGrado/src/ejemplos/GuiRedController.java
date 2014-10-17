@@ -6,16 +6,26 @@ package ejemplos;
  * and open the template in the editor.
  */
 
+import static ejemplos.TesteoController.url;
 import eu.schudt.javafx.controls.calendar.DatePicker;
 import fxml.ControlledScreen;
 import fxml.ScreensController;
 import java.awt.Desktop;
+import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -27,14 +37,17 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
  import javafx.util.Callback; 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -42,7 +55,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 
 import javafx.util.StringConverter;
@@ -67,30 +84,50 @@ import org.neuroph.util.TransferFunctionType;
  * @author N550J
  */
 public class GuiRedController implements Initializable, ControlledScreen{
-     Validar vali=new Validar();
+   //Base de datos
+   static String url = "jdbc:postgresql://190.85.249.22/trabajodegrado";
+    static String user = "postgres";
+    static String password = "tesis";  
+    
+    //fin Base de datos
+    
+    
+    
+    
+    Validar vali=new Validar();
    @FXML private AnchorPane anchorP;
    @FXML private Button boton_cargar_red;
    @FXML private DatePicker fechaInicial;
+   @FXML private TextArea texareaDatos;
+   
    @FXML private DatePicker fechaFinal;
    @FXML private GridPane gridPane;
-   @FXML Button botonMineria;
+   @FXML Button botonMineria,botonValidarRed;
    @FXML Button botonInteligencia,botonentrenarRed,botonmine,botonred,boton_cargar_conjunto ;
    @FXML TableView  tablaEntrenamiento;
-   @FXML TextField tex_error, tex_max_iteraciones,tex_tasa_aprendizaje,text_num_capas,tex_num_neu_entrada,tex_num_neu_oculta;
-   @FXML       int t_max_iteraciones,t_num_capas,t_num_neu_entrada,t_num_neu_ocul;
+   @FXML TextField tex_error, tex_max_iteraciones,tex_tasa_aprendizaje,text_num_capas,tex_num_neu_entrada,tex_num_neu_oculta,t_numero_neuro_salida;
+   @FXML       int t_max_iteraciones,t_num_capas,t_num_neu_entrada,t_num_neu_ocul,t_neuro_salida;
    @FXML    double t_error,t_tasa_aprendizaje;
-    
+   String regla_aprendiz;
+   String funcion_trans; 
    @FXML private ComboBox combo_dia_semana,combo_altitud,combo_tipo_comsumidor,
                           combo_fen_climatico,combo_fran_horaria,combo_estrato,
                           combo_mes,funcion_transferencia,regla_aprendizaje;
     File file;
-   @FXML CheckBox biasCheck;
-   
+   @FXML CheckBox biasCheck,checkConectarentradasalida ;   
    String Column1MapKey = "A";
    String Column2MapKey = "B";
    String Column3MapKey = "C";
     ScreensController myController;   
    private Desktop desktop=Desktop.getDesktop();
+            boolean bias ;        
+
+   /*
+    Iniciar objetos
+   */
+   
+    CrearRed crearRed =new CrearRed();
+   int mometunInt;
     /**
      * Initializes the controller class.
      */
@@ -99,6 +136,7 @@ public class GuiRedController implements Initializable, ControlledScreen{
        assert  boton_cargar_red != null : "fx:id=\"toolbar\" was not injected: check your FXML file 'guiRed.fxml'.";
        assert botonentrenarRed!= null : "fx:id=\"botonentrenarRed\" was not injected: check your FXML file 'guiRed.fxml'.";
        assert tablaEntrenamiento!= null : "fx:id=\"tablaEntrenamiento\" was not injected: check your FXML file 'guiRed.fxml'.";
+       assert texareaDatos !=null: "fx:id=\"texareaDatos\" was not injected: check your FXML file 'guiRed.fxml'.";
        iniciarCalendarios();
        iniciarControles();
 //       Image imageload = new Image(getClass().getResourceAsStream("/imagenes/load.png"));
@@ -108,7 +146,8 @@ public class GuiRedController implements Initializable, ControlledScreen{
        botonmine.setGraphic(new ImageView(imageMine));
        botonred.setGraphic(new ImageView(imageRed));
 //       boton_cargar_conjunto.setGraphic(new ImageView(  imageload));
-    
+       
+      
     
     }
     
@@ -119,7 +158,7 @@ public class GuiRedController implements Initializable, ControlledScreen{
           funcion_transferencia.getSelectionModel().selectLast();
                   
           assert regla_aprendizaje != null : "fx:id=\"funcion_transferencia\" was not injected: check your FXML file 'guiRed.fxml'.";
-          ObservableList<String> optionscombo_regla_aprendizaje= FXCollections.observableArrayList("BackPropagatión", "BackPropagatión con Momentum", "Resilient BackPropagatión", "Dynamic BackPropagatión");
+          ObservableList<String> optionscombo_regla_aprendizaje= FXCollections.observableArrayList("BackPropagation", "BackPropagation con Momentum", "Resilient BackPropagation", "Dynamic BackPropagation");
           regla_aprendizaje.setItems(optionscombo_regla_aprendizaje);
           regla_aprendizaje.getSelectionModel().selectLast(); 
           
@@ -188,6 +227,13 @@ public class GuiRedController implements Initializable, ControlledScreen{
     private void irInteligencia(ActionEvent event){
        myController.setScreen(Ejemplos.screen2ID);
     }
+    @FXML
+    private void  irTesteoRNA(ActionEvent event){
+      myController.setScreen(Ejemplos.screen4ID);
+    
+    }
+    
+    
     
     @Override
     public void setScreenParent(ScreensController screenPage) {
@@ -233,24 +279,62 @@ public class GuiRedController implements Initializable, ControlledScreen{
         System.out.println("---------------------*");
     }
     
-    public void abrirArchivoEntrenamiento(ActionEvent event){    
-     Stage stage =new Stage();    
+    public void abrirArchivoEntrenamiento(ActionEvent event) throws FileNotFoundException, IOException{    
+        Stage stage =new Stage();    
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Resource File");       
-          file =fileChooser.showOpenDialog(stage);
-          
-        //opulateTable( file.getPath(), true);
+        fileChooser.setTitle("Abrir archivo de entrenamiento");       
+          file =fileChooser.showOpenDialog(stage); 
+        FileInputStream fstream = new FileInputStream(file.getPath());
+            // Creamos el objeto de entrada
+            DataInputStream entrada = new DataInputStream(fstream);
+            // Creamos el Buffer de Lectura
+            BufferedReader buffer = new BufferedReader(new InputStreamReader(entrada));
+            String strLinea;
+            // Leer el archivo linea por linea
+            while ((strLinea = buffer.readLine()) != null)   {
+                // Imprimimos la línea por pantalla
+                texareaDatos.appendText(strLinea+"\n");
+            } 
+    }
+    
+    public void abrirDatosDesdeBD() throws ClassNotFoundException{
+      try {
+           String consulta="COPY (SELECT medida, hora, franja_horaria, ano,mes, dia , total_consumo \n" +
+            "FROM historico_consumo, medida, tiempo,fecha, cliente ) TO  'D:\\\\excell\\\\file.csv'  delimiter ';' ;";
+           Connection con=null;
+           PreparedStatement pst = null;
+           Class.forName("org.postgresql.Driver");
+           con = DriverManager.getConnection(url, user, password);
+           pst = con.prepareStatement(consulta);
+           pst.execute();
+            ArrayList<String> resultado = new ArrayList<>(0);
+           System.out.println("ssssss");
         
+            
+           System.out.println("lfsdlf");
+           
+           
+//      JDBCInputAdapter JDBCinput= new JDBCInputAdapter( (Connection) conexion, sql);      
+       } catch (SQLException ex) {
+           Logger.getLogger(TesteoController.class.getName()).log(Level.SEVERE, null, ex);
+       }
+    
     }
     
     
+    
+    
     public void tomarDatosEntrenamiento(ActionEvent event){
-       
+        Stage stage =new Stage(); 
+          funcion_trans=   funcion_transferencia.getValue().toString();
+    regla_aprendiz = regla_aprendizaje.getValue().toString();
+        
+        bias= biasCheck.isSelected();        
          if(vali.validaDouble(tex_error)){
             t_error=Double.parseDouble(tex_error.getText().toString());
          }if(vali.validaDouble(tex_max_iteraciones)){
             t_max_iteraciones=Integer.parseInt(tex_max_iteraciones.getText().toString());
-         } if(vali.validaDouble(tex_tasa_aprendizaje)){
+         }if(vali.validaDouble(tex_tasa_aprendizaje)){
             t_tasa_aprendizaje=Double.parseDouble(tex_tasa_aprendizaje.getText().toString());
          }if(vali.validarEntero(text_num_capas)){
             t_num_capas=Integer.parseInt(text_num_capas.getText().toString());
@@ -258,9 +342,65 @@ public class GuiRedController implements Initializable, ControlledScreen{
             t_num_neu_entrada=Integer.parseInt(tex_num_neu_entrada.getText().toString()); 
          }if(vali.validarEntero(tex_num_neu_oculta)){
             t_num_neu_ocul=Integer.parseInt(tex_num_neu_oculta.getText().toString());  
+         }if(vali.validarEntero(t_numero_neuro_salida)){
+            t_neuro_salida=Integer.parseInt(t_numero_neuro_salida.getText().toString());        
          }
-          
+         
+         entrenarRed();
     }
+    public void entrenarRed(){
+    
+         if(regla_aprendizaje.getValue().toString().equals("BackPropagation con Momentum")){
+                crearRed.crearRedconMomentun(t_error, t_max_iteraciones, t_tasa_aprendizaje, t_num_capas, t_num_neu_entrada, 
+                t_num_neu_ocul, t_neuro_salida,mometunInt, funcion_trans ,regla_aprendiz,file.getPath(), bias);
+
+            
+         }if(regla_aprendizaje.getValue().toString().equals("BackPropagation")){
+               
+             
+         }
+    
+    }
+    
+    
+    @FXML public int ventanaEmergente( ){
+        
+        if (regla_aprendizaje.getValue().toString().equals("BackPropagation con Momentum")) {
+            final Stage primaryStage  =new Stage();
+            primaryStage.setTitle("ingrese Momentum");           
+            //  final Popup popup = new Popup(); popup.setX(400); popup.setY(300);
+            //  popup.getContent().addAll(new Circle(25, 25, 50, Color.AQUAMARINE));
+            final TextField  momentumTexfield= new TextField("Momentum");
+            Button botonaceptar = new Button("Aceptar");        
+            botonaceptar.setOnAction(new EventHandler<ActionEvent>() {             
+            @Override public void handle(ActionEvent event) {       
+            if(vali.validarEntero(momentumTexfield)){
+             mometunInt= Integer.parseInt(  momentumTexfield.getText().toString());
+             primaryStage.hide();
+          }else{
+             momentumTexfield.setText(" ");
+           }          
+      }});    
+            Button botoncancelar = new Button("Cancelar");
+            botoncancelar.setOnAction(new EventHandler<ActionEvent>() {
+             @Override public void handle(ActionEvent event) {
+                  primaryStage.hide();            
+             }
+           }); 
+               HBox layout = new HBox(10);
+               layout.setStyle("-fx-background-color: cornsilk; -fx-padding: 10;");
+               layout.getChildren().addAll(momentumTexfield, botonaceptar, botoncancelar);
+               primaryStage.setScene(new Scene(layout));
+               primaryStage.show();     
+        }
+       
+        return mometunInt;
+    }
+    
+    
+    
+    
+    
      @FXML public void crearRed(double error,int maxIteraciones, double tazaAprendi, int numCapas, int neur_entrada,int neu_oculta,int neu_salida){
         
          String funcion_trans=   funcion_transferencia.getValue().toString();
@@ -275,36 +415,63 @@ public class GuiRedController implements Initializable, ControlledScreen{
             System.out.println("Archivo no encontrado");
          } catch (NumberFormatException ex) {
             System.out.println("Error leyendo archivo o el formato esta dañado!");
-         }
-         
-         
+         } 
          if(biasCheck.isSelected()){
              BiasNeuron bias=new BiasNeuron();
              if(funcion_trans.equals("Tangencial")){
-                 MultiLayerPerceptron redNeu=new MultiLayerPerceptron(TransferFunctionType.TANH, neur_entrada,neu_oculta,neu_salida);
-                    if(regla_aprendiz.equals("BackPropagatión")){
+                       MultiLayerPerceptron redNeu=new MultiLayerPerceptron(TransferFunctionType.TANH, neur_entrada,neu_oculta,neu_salida);
+                    if(regla_aprendiz.equals("BackPropagation")){
                         MomentumBackpropagation reglaAprendisaje=(MomentumBackpropagation)redNeu.getLearningRule();
-                    }if(regla_aprendiz.equals("BackPropagatión con Momentum")){
-
-                    }if(regla_aprendiz.equals("Resilient BackPropagatión")){
+                        reglaAprendisaje.setLearningRate(error);
+                        reglaAprendisaje.setMomentum(error);
+                       
+                    }if(regla_aprendiz.equals("BackPropagation con Momentum")){
+                                             
+                         
+                    }if(regla_aprendiz.equals("Resilient BackPropagation")){
                         ResilientPropagation reglaApredizaje=(ResilientPropagation)redNeu.getLearningRule();
-                    }if(regla_aprendiz.equals("Dynamic BackPropagatión")){
+                    }if(regla_aprendiz.equals("Dynamic BackPropagation")){
                        DynamicBackPropagation reglaAprendizaje=(DynamicBackPropagation)redNeu.getLearningRule();
                     }
                   
              }else if(funcion_trans.equals("Sigmoidal")){
                 MultiLayerPerceptron redNeu=new MultiLayerPerceptron(TransferFunctionType.SIGMOID, neur_entrada,neu_oculta,neu_salida);
+                   if(regla_aprendiz.equals("BackPropagation")){
+                        MomentumBackpropagation reglaAprendisaje=(MomentumBackpropagation)redNeu.getLearningRule();
+                    }if(regla_aprendiz.equals("BackPropagation con Momentum")){
+
+                    }if(regla_aprendiz.equals("Resilient BackPropagation")){
+                        ResilientPropagation reglaApredizaje=(ResilientPropagation)redNeu.getLearningRule();
+                    }if(regla_aprendiz.equals("Dynamic BackPropagation")){
+                       DynamicBackPropagation reglaAprendizaje=(DynamicBackPropagation)redNeu.getLearningRule();
+                    }
              }else if(funcion_trans.equals("Lineal")){
+                 
                 MultiLayerPerceptron redNeu=new MultiLayerPerceptron(TransferFunctionType.LINEAR, neur_entrada,neu_oculta,neu_salida);
-             
+                    if(regla_aprendiz.equals("BackPropagation")){
+                        MomentumBackpropagation reglaAprendisaje=(MomentumBackpropagation)redNeu.getLearningRule();
+                    }if(regla_aprendiz.equals("BackPropagation con Momentum")){
+                                              System.out.println("---------------");
+                    }if(regla_aprendiz.equals("Resilient BackPropagation")){
+                        ResilientPropagation reglaApredizaje=(ResilientPropagation)redNeu.getLearningRule();
+                    }if(regla_aprendiz.equals("Dynamic BackPropagation")){
+                       DynamicBackPropagation reglaAprendizaje=(DynamicBackPropagation)redNeu.getLearningRule();
+                    }  
              } 
              
          }else{
-         
+               
              
          }
         
     }
+     public void instanciarRed(){
+     
+     
+     
+     }
+     
+     
 
      private ObservableList<Map> generateDataInMap() {
         int max = 20;

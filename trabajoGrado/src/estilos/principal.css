@@ -4,6 +4,7 @@
 
 .mainFxmlClass {
  -fx-background-image: url("/imagenes/background.jpg");
+ -fx-background-repeat: repeat;
 }
 
 #texto{
@@ -11,4 +12,7 @@
    -fx-font-family: "Arial Black";
    -fx-fill: #818181;
    -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );
+}
+.choice-box {
+-fx-skin: "de.eppleton.controls.choicewheel.ChoiceBoxSkin";
 }
