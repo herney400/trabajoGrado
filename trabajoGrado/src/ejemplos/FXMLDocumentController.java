@@ -11,6 +11,9 @@ import accesoDatos.Consultas;
 import eu.schudt.javafx.controls.calendar.DatePicker;
 import fxml.ControlledScreen;
 import fxml.ScreensController;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -104,7 +107,7 @@ public class FXMLDocumentController   implements Initializable, ControlledScreen
     //Calendarios
     @FXML private DatePicker fechaInicial;
     @FXML private DatePicker fechaFinal;
-     @FXML Button botonInteligencia,botonmineria,botonred,boton_mineria,boton_inteligencia;
+    @FXML Button botonInteligencia,botonmineria,botonred,boton_mineria,boton_inteligencia,botonCsv;
      
      
     @Override
@@ -898,6 +901,39 @@ public class FXMLDocumentController   implements Initializable, ControlledScreen
         }
     }
     
+    @FXML private void leerCSV(ActionEvent E)
+    {
+      File archivo = null;
+      FileReader fr = null;
+      BufferedReader br = null;
+ 
+      try {
+         // Apertura del fichero y creacion de BufferedReader para poder
+         // hacer una lectura comoda (disponer del metodo readLine()).
+         archivo = new File ("C:\\Consu_res_1-3.csv");
+         fr = new FileReader (archivo);
+         br = new BufferedReader(fr);
+ 
+         // Lectura del fichero
+         String linea;
+         while((linea=br.readLine())!=null)
+            System.out.println(linea);
+            //Cada linea queda dividida por el ; y eso devuelve un array con los valores de la linea
+            String [] cosito = linea.split(";");
+      }
+      catch(Exception e){
+         e.printStackTrace();
+      }finally{
+         try{                   
+            if( null != fr ){  
+               fr.close();    
+            }                 
+         }catch (Exception e2){
+            e2.printStackTrace();
+         }
+      }
+    }
+    
     @FXML private void activarFiltro(){
         if(!combo_estrato.getValue().equals("Todos"))
         {
@@ -1071,10 +1107,11 @@ public class FXMLDocumentController   implements Initializable, ControlledScreen
     }
     
     @FXML
-     private void irMineria(ActionEvent event){
+    private void irMineria(ActionEvent event){
        myController.setScreen(Ejemplos.screen1ID);
     }
-     @FXML
+    
+    @FXML
     private void irInteligencia(ActionEvent event){
        myController.setScreen(Ejemplos.screen2ID);
     }
