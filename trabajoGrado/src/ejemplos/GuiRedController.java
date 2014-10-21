@@ -6,7 +6,6 @@ package ejemplos;
  * and open the template in the editor.
  */
 
-import static ejemplos.TesteoController.url;
 import eu.schudt.javafx.controls.calendar.DatePicker;
 import fxml.ControlledScreen;
 import fxml.ScreensController;
@@ -20,19 +19,16 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
  import javafx.util.Callback; 
@@ -56,10 +52,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 
 import javafx.util.StringConverter;
@@ -67,10 +60,8 @@ import lectura.CSVReader;
 import lectura.Validar;
 import org.neuroph.core.NeuralNetwork;
 import org.neuroph.core.data.DataSet;
-import org.neuroph.core.learning.LearningRule;
 import org.neuroph.nnet.MultiLayerPerceptron;
 import org.neuroph.nnet.comp.neuron.BiasNeuron;
-import org.neuroph.nnet.learning.BackPropagation;
 import org.neuroph.nnet.learning.DynamicBackPropagation;
 import org.neuroph.nnet.learning.MomentumBackpropagation;
 import org.neuroph.nnet.learning.ResilientPropagation;
@@ -88,7 +79,7 @@ public class GuiRedController implements Initializable, ControlledScreen{
    static String url = "jdbc:postgresql://190.85.249.22/trabajodegrado";
     static String user = "postgres";
     static String password = "tesis";  
-    
+     String[][] entrada ;
     //fin Base de datos
     
     
@@ -121,7 +112,7 @@ public class GuiRedController implements Initializable, ControlledScreen{
     ScreensController myController;   
    private Desktop desktop=Desktop.getDesktop();
             boolean bias ;        
-
+File archivo = null;
    /*
     Iniciar objetos
    */
@@ -297,29 +288,76 @@ public class GuiRedController implements Initializable, ControlledScreen{
             } 
     }
     
-    public void abrirDatosDesdeBD() throws ClassNotFoundException{
+    
+    
+    @FXML
+    public void abrirDatosDesdeBD() throws IOException  {
+         
+     // File archivo = null;
+      FileReader fr = null;
+      BufferedReader br = null; 
       try {
-           String consulta="COPY (SELECT medida, hora, franja_horaria, ano,mes, dia , total_consumo \n" +
-            "FROM historico_consumo, medida, tiempo,fecha, cliente ) TO  'D:\\\\excell\\\\file.csv'  delimiter ';' ;";
-           Connection con=null;
-           PreparedStatement pst = null;
-           Class.forName("org.postgresql.Driver");
-           con = DriverManager.getConnection(url, user, password);
-           pst = con.prepareStatement(consulta);
-           pst.execute();
-            ArrayList<String> resultado = new ArrayList<>(0);
-           System.out.println("ssssss");
-        
+         // Apertura del fichero y creacion de BufferedReader para poder
+         // hacer una lectura comoda (disponer del metodo readLine()).
+         archivo = new File ("D:\\excell\\file.csv");
+         fr = new FileReader (archivo);
+         br = new BufferedReader(fr);        
+       
+        ArrayList medidaEntrada =new ArrayList();
+        ArrayList horaentrada=new ArrayList();
+        ArrayList franjaEntrada=new ArrayList();
+        ArrayList anoEntrada=new ArrayList();
+        ArrayList diaEntrada=new ArrayList();
+        ArrayList mesEntrada=new ArrayList();
+        ArrayList consumoEntrada=new ArrayList();
+         // Lectura del fichero
+         String linea;
+          String [] cosito = null;
+         while((linea=br.readLine())!=null){
+            System.out.println(linea);
+            cosito= linea.split(";");
+              medidaEntrada.add(cosito[0]);
+              horaentrada.add(cosito[1]);
+              franjaEntrada.add(cosito[2]);
+              anoEntrada.add(cosito[3]);
+              diaEntrada.add(cosito[4]);
+              mesEntrada.add(cosito[5]);
+              consumoEntrada.add(cosito[6]);                 
+         }
+            //Cada linea queda dividida por el ; y eso devuelve un array con los valores de la linea  
+            System.out.println("leidoodooddodo");
+      }
+      catch(Exception e){
+         e.printStackTrace();
+      }finally{
+         try{                   
+            if( null != fr ){  
+               fr.close();    
+            }                 
+         }catch (Exception e2){
+            e2.printStackTrace();
+         }
+      }
+      
+      
+      
+        System.out.println("ddd");
+    }
+    
+    public void pasarAcolumnas(String[] array, String line){
+      
+        for (int i = 0; i < 100000; i++) {
             
-           System.out.println("lfsdlf");
-           
-           
-//      JDBCInputAdapter JDBCinput= new JDBCInputAdapter( (Connection) conexion, sql);      
-       } catch (SQLException ex) {
-           Logger.getLogger(TesteoController.class.getName()).log(Level.SEVERE, null, ex);
-       }
+            for (int j = 0; j < array.length; j++) {
+                entrada[j][i]=line.split(";").toString();
+            }
+            
+        }
+    
     
     }
+    
+    
     
     
     

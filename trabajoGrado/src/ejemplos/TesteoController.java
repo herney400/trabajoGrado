@@ -32,10 +32,9 @@ import org.neuroph.util.io.JDBCInputAdapter;
  * @author N550J
  */
 public class TesteoController implements Initializable, ControlledScreen {
-   static String url = "jdbc:postgresql://localhost/postgres";
+    static String url = "jdbc:postgresql://190.85.249.22/trabajodegrado";
     static String user = "postgres";
-    static String password = "tesis";
-    
+    static String password = "tesis"; 
     double precio, consumo, pago;
     @FXML private AnchorPane anchorTesteo;
     Conexion conexion=new Conexion();
@@ -74,7 +73,7 @@ public class TesteoController implements Initializable, ControlledScreen {
     public void cargarDatosBD() throws ClassNotFoundException{
        try {
            String consulta="COPY (SELECT medida, hora, franja_horaria, ano,mes, dia , total_consumo \n" +
-            "FROM historico_consumo, medida, tiempo,fecha, cliente ) TO  'D:\\\\excell\\\\file.csv'  delimiter ';' ;";
+            "FROM historico_consumo, medida, tiempo,fecha, cliente ) TO  'D:\\excell\\file.csv'  delimiter ';' ;";
            Connection con=null;
            PreparedStatement pst = null;
            Class.forName("org.postgresql.Driver");
