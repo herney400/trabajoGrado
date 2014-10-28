@@ -7,7 +7,6 @@
 package accesoDatos;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  *
@@ -41,14 +40,14 @@ public class Consultas {
         SQL += "from " + tabla + " ";
         SQL += generarWhere(tablaSubConWhere, id_tablaSubConWhere, valoresWhere);
         
-        for(int i=0; i<whereAux.size(); i++)
-        {
-            SQL += whereAux.get(i) + "\n";
+        for (Object whereAux1 : whereAux) {
+            SQL += whereAux1 + "\n";
         }
-        
+        SQL += "and " + campoTabla + " > 0" + "\n";
         SQL += generarSubConsultaFecha(fechaInicial, fechaFinal);
         SQL += "group by "+ nombreCampo + "\n";
-        SQL += "order by "+renombre;
+        SQL += "order by "+renombre +  " desc \n";
+        SQL += "limit 20;";
         
         return SQL;
     }
@@ -59,6 +58,9 @@ public class Consultas {
      * @param tablaSubCon este campo identifica que filtro se va a aplicar a la consulta
      * @param id_tablaSubCon 
      * @param nombreCampo
+     * @param campoTabla 
+     * @param tabla
+     * @param renombre
      * @return 
      */
     public String generarSelect (String tipoConsulta, String tablaSubCon, String id_tablaSubCon, 
@@ -109,15 +111,15 @@ public class Consultas {
         String subCon="";
         if(fechaInicial.equals("") && !fechaFinal.equals(""))
         {
-            subCon +=" and id_fecha in (select id_fecha from fecha where fecha < '"+ fechaFinal +"')";
+            subCon +=" and id_fecha in (select id_fecha from fecha where fecha_c < '"+ fechaFinal +"')";
         }
         else if(fechaFinal.equals("") && !fechaInicial.equals(""))
         {
-            subCon +=" and id_fecha in (select id_fecha from fecha where fecha > '"+ fechaInicial +"')";
+            subCon +=" and id_fecha in (select id_fecha from fecha where fecha_c > '"+ fechaInicial +"')";
         }
         else if(!fechaFinal.equals("") && !fechaInicial.equals(""))
         {
-            subCon += " and id_fecha in (select id_fecha from fecha where fecha > '"+ fechaInicial +"' and fecha < '"+ fechaFinal +"')";
+            subCon += " and id_fecha in (select id_fecha from fecha where fecha_c > '"+ fechaInicial +"' and fecha_c < '"+ fechaFinal +"')";
         }
         else
         {

@@ -5,8 +5,6 @@
  */
 
 package accesoDatos;
-import java.awt.event.MouseEvent;
-import java.beans.EventHandler;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Level;

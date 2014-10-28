@@ -108,20 +108,34 @@ public class FXMLDocumentController   implements Initializable, ControlledScreen
     @FXML private DatePicker fechaInicial;
     @FXML private DatePicker fechaFinal;
     @FXML Button botonInteligencia,botonmineria,botonred,boton_mineria,boton_inteligencia,botonCsv;
-     
-     
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        iniciar_varios();
-   //     menuBar();
-        iniciarCombos();
-        iniciarCalendarios();
-         Image imageMine = new Image(getClass().getResourceAsStream("/imagenes/mineri.png"));
-        Image imageRed = new Image(getClass().getResourceAsStream("/imagenes/red3.png")); 
-       boton_mineria.setGraphic(new ImageView(imageMine));
-       boton_inteligencia.setGraphic(new ImageView(imageRed));
+    
+    /**
+     * 
+     * @param screenPage 
+     */
+    @Override public void setScreenParent(ScreensController screenPage) {
+        myController=screenPage;
     } 
     
+    /**
+     * 
+     * @param url
+     * @param rb 
+     */
+    @Override public void initialize(URL url, ResourceBundle rb) {
+        iniciar_varios();
+        //menuBar();
+        iniciarCombos();
+        iniciarCalendarios();
+        Image imageMine = new Image(getClass().getResourceAsStream("/imagenes/mineri.png"));
+        Image imageRed = new Image(getClass().getResourceAsStream("/imagenes/red3.png")); 
+        boton_mineria.setGraphic(new ImageView(imageMine));
+        boton_inteligencia.setGraphic(new ImageView(imageRed));
+    } 
+    
+    /**
+     * 
+     */
     public void iniciarCalendarios(){
         fechaInicial = new DatePicker(Locale.ENGLISH);
         fechaFinal = new DatePicker(Locale.ENGLISH);
@@ -146,6 +160,9 @@ public class FXMLDocumentController   implements Initializable, ControlledScreen
         gridPane.add(fechaFinal, 1, 2);
     }
     
+    /**
+     * 
+     */
     public void iniciar_varios(){
         drilldownCss = FXMLDocumentController.class.getResource("/estilos/DrilldownChart.css").toExternalForm();
         assert toolbar != null : "fx:id=\"toolbar\" was not injected: check your FXML file 'FXMLDocumetn.fxml'.";
@@ -162,6 +179,9 @@ public class FXMLDocumentController   implements Initializable, ControlledScreen
         assert gridPane != null : "fx:id=\"gridPane\" was not injected: check your FXML file 'FXMLDocumetn.fxml'.";
     }
     
+    /**
+     * 
+     */
     public void iniciarCombos(){
         Conexion con = new Conexion(); 
         assert mibarchar != null : "fx:id=\"mibarchar\" was not injected: check your FXML file 'FXMLDocumetn.fxml'.";
@@ -193,7 +213,7 @@ public class FXMLDocumentController   implements Initializable, ControlledScreen
         combo_medida.getSelectionModel().selectLast();
         
         assert combo_tipo_cliente != null : "fx:id=\"combo_tipo_cliente\" was not injected: check your FXML file 'FXMLDocumetn.fxml'.";      
-        ObservableList<String> datosComboTipoCliente = con.LlenarCommbo("select tipo_cliente from tipo_cliente order by tipo_cliente");
+        ObservableList<String> datosComboTipoCliente = con.LlenarCommbo("select tipo from tipo_cliente order by tipo_cliente");
         datosComboTipoCliente.add("Todos");
         combo_tipo_cliente.getItems().clear();
         combo_tipo_cliente.setItems(datosComboTipoCliente);
@@ -214,7 +234,7 @@ public class FXMLDocumentController   implements Initializable, ControlledScreen
         combo_barrio.getSelectionModel().selectLast();
         
         assert combo_region != null : "fx:id=\"combo_region\" was not injected: check your FXML file 'FXMLDocumetn.fxml'.";      
-        ObservableList<String> datoscombo_region = con.LlenarCommbo("select distinct region from region order by region");
+        ObservableList<String> datoscombo_region = con.LlenarCommbo("select distinct departamento from departamento order by departamento");
         datoscombo_region.add("Todos");
         combo_region.getItems().clear();
         combo_region.setItems(datoscombo_region);
@@ -235,7 +255,7 @@ public class FXMLDocumentController   implements Initializable, ControlledScreen
         combo_altitud.getSelectionModel().selectLast();
         
         assert combo_zona != null : "fx:id=\"combo_zona\" was not injected: check your FXML file 'FXMLDocumetn.fxml'.";      
-        ObservableList<String> datoscombo_zona=con.LlenarCommbo("select distinct zona from ciudad");
+        ObservableList<String> datoscombo_zona=con.LlenarCommbo("select distinct zona from cliente");
         datoscombo_zona.add("Todos");
         combo_zona.getItems().clear();
         combo_zona.setItems(datoscombo_zona);
@@ -421,7 +441,7 @@ public class FXMLDocumentController   implements Initializable, ControlledScreen
                 sqlCliente += "and id_cliente in (select id_cliente from cliente where 1 = 1";
 
                 if(!combo_tipo_cliente.getValue().equals("Todos")){
-                    sqlCliente += " and id_tipo_cliente in (select id_tipo_cliente from tipo_cliente where tipo_cliente = '"+combo_tipo_cliente.getValue()+"')";
+                    sqlCliente += " and id_tipo_cliente in (select id_tipo_cliente from tipo_cliente where tipo = '"+combo_tipo_cliente.getValue()+"')";
                 }
 
                 if(!combo_estrato.getValue().equals("Todos")){
@@ -448,8 +468,13 @@ public class FXMLDocumentController   implements Initializable, ControlledScreen
                     }         
                 }
 
+                if(!combo_zona.getValue().equals("Todos"))
+                {
+                    sqlCliente += " and zona = '"+combo_zona.getValue()+"'";
+                }
+                
                 if(!combo_barrio.getValue().equals("Todos")){
-                    sqlCliente += " and barrio = '"+combo_barrio.getValue()+"')";
+                    sqlCliente += " and barrio = '"+combo_barrio.getValue()+"'";
                 }
                 sqlCliente+=")";
                 subConsAdd.add(sqlCliente);
@@ -465,15 +490,11 @@ public class FXMLDocumentController   implements Initializable, ControlledScreen
                 subConGeo += " and id_ciudad in (select id_ciudad from ciudad where 1=1 ";
                 if(!combo_region.getValue().equals("Todos"))
                 {
-                    subConGeo += "and id_region in (select id_region from region where region = '"+combo_region.getValue()+"') ";
+                    subConGeo += "and id_departamento in (select id_departamento from departamento where departamento = '"+combo_region.getValue()+"') ";
                 }
                 if(!combo_ciudad.getValue().equals("Todos"))
                 {
                     subConGeo += "and ciudad = '"+combo_ciudad.getValue()+"' ";
-                }
-                if(!combo_zona.getValue().equals("Todos"))
-                {
-                    subConGeo += "and zona = '"+combo_zona.getValue()+"' ";
                 }
                 if(!combo_altitud.getValue().equals("Todos"))
                 {
@@ -901,6 +922,10 @@ public class FXMLDocumentController   implements Initializable, ControlledScreen
         }
     }
     
+    /**
+     * 
+     * @param E 
+     */
     @FXML private void leerCSV(ActionEvent E){
       File archivo = null;
       FileReader fr = null;
@@ -916,9 +941,11 @@ public class FXMLDocumentController   implements Initializable, ControlledScreen
          // Lectura del fichero
          String linea;
          while((linea=br.readLine())!=null)
-            System.out.println(linea);
+         {
             //Cada linea queda dividida por el ; y eso devuelve un array con los valores de la linea
             String [] cosito = linea.split(";");
+            System.out.println(linea);
+         }
       }
       catch(Exception e){
          e.printStackTrace();
@@ -933,6 +960,9 @@ public class FXMLDocumentController   implements Initializable, ControlledScreen
       }
     }
     
+    /**
+     * 
+     */
     @FXML private void activarFiltro(){
         if(!combo_estrato.getValue().equals("Todos"))
         {
@@ -944,6 +974,9 @@ public class FXMLDocumentController   implements Initializable, ControlledScreen
         }
     }
     
+    /**
+     * 
+     */
     @FXML private void activarFiltroAltitud(){
         if(!combo_altitud.getValue().equals("Todos"))
         {
@@ -955,6 +988,9 @@ public class FXMLDocumentController   implements Initializable, ControlledScreen
         }
     }
     
+    /**
+     * 
+     */
     @FXML private void activaFiltroHora(){
         if(!combo_hora.getValue().equals("Todos"))
         {
@@ -1032,6 +1068,10 @@ public class FXMLDocumentController   implements Initializable, ControlledScreen
         graph.createSymbolsProperty();
     }
     
+    /**
+     * 
+     * @param e 
+     */
     @FXML private void reportePrecio(ActionEvent e){
         final NumberAxis xAxis = new NumberAxis(1, 53, 4);
         final NumberAxis yAxis = new NumberAxis(0, 80, 10);
@@ -1054,6 +1094,9 @@ public class FXMLDocumentController   implements Initializable, ControlledScreen
          
     }
 
+    /**
+     * 
+     */
     @FXML private void menuBar(){
         
          String styledToolBarCss = FXMLDocumentController.class.getResource("/fxml/FXMLDocument.fxml").toExternalForm();
@@ -1099,19 +1142,20 @@ public class FXMLDocumentController   implements Initializable, ControlledScreen
 
         menubar.getMenus().addAll(menu1);
    }
-
-    @Override
-    public void setScreenParent(ScreensController screenPage) {
-        myController=screenPage;
-    }
     
-    @FXML
-    private void irMineria(ActionEvent event){
+    /**
+     * 
+     * @param event 
+     */
+    @FXML private void irMineria(ActionEvent event){
        myController.setScreen(Ejemplos.screen1ID);
     }
     
-    @FXML
-    private void irInteligencia(ActionEvent event){
+    /**
+     * 
+     * @param event 
+     */
+    @FXML private void irInteligencia(ActionEvent event){
        myController.setScreen(Ejemplos.screen2ID);
     }
 }
